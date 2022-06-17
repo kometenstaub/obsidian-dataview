@@ -1,0 +1,1337 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/obsidian.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
+    
+    
+      
+        <title>Queries - Dataview</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#queries" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Dataview" class="md-header__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dataview
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Queries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Dataview" class="md-nav__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    Dataview
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-annotation/" class="md-nav__link">
+        Data Annotation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-queries/" class="md-nav__link">
+        Data Querying
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Query Language Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Query Language Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Query Language Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Queries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Queries
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general-format" class="md-nav__link">
+    General Format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-types" class="md-nav__link">
+    Query Types
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-queries" class="md-nav__link">
+    List Queries
+  </a>
+  
+    <nav class="md-nav" aria-label="List Queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-without-id" class="md-nav__link">
+    LIST WITHOUT ID
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-queries" class="md-nav__link">
+    Table Queries
+  </a>
+  
+    <nav class="md-nav" aria-label="Table Queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-without-id" class="md-nav__link">
+    TABLE WITHOUT ID
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-queries" class="md-nav__link">
+    Task Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar-queries" class="md-nav__link">
+    Calendar Queries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-commands" class="md-nav__link">
+    Data Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from" class="md-nav__link">
+    FROM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where" class="md-nav__link">
+    WHERE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    SORT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by" class="md-nav__link">
+    GROUP BY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatten" class="md-nav__link">
+    FLATTEN
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limit" class="md-nav__link">
+    LIMIT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expressions/" class="md-nav__link">
+        Expressions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../literals/" class="md-nav__link">
+        Literals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        Sources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        Functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          JavaScript Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="JavaScript Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          JavaScript Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/intro/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/data-array/" class="md-nav__link">
+        Data Arrays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-reference/" class="md-nav__link">
+        Codeblock Reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-examples/" class="md-nav__link">
+        Codeblock Examples
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Plugin Developers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Plugin Developers" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Plugin Developers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugin/develop-against-dataview/" class="md-nav__link">
+        Developing Against Dataview
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../friends/" class="md-nav__link">
+        Friends of Dataview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general-format" class="md-nav__link">
+    General Format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-types" class="md-nav__link">
+    Query Types
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-queries" class="md-nav__link">
+    List Queries
+  </a>
+  
+    <nav class="md-nav" aria-label="List Queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-without-id" class="md-nav__link">
+    LIST WITHOUT ID
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-queries" class="md-nav__link">
+    Table Queries
+  </a>
+  
+    <nav class="md-nav" aria-label="Table Queries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-without-id" class="md-nav__link">
+    TABLE WITHOUT ID
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-queries" class="md-nav__link">
+    Task Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calendar-queries" class="md-nav__link">
+    Calendar Queries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-commands" class="md-nav__link">
+    Data Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from" class="md-nav__link">
+    FROM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where" class="md-nav__link">
+    WHERE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    SORT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by" class="md-nav__link">
+    GROUP BY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatten" class="md-nav__link">
+    FLATTEN
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limit" class="md-nav__link">
+    LIMIT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/blacksmithgu/obsidian-dataview/edit/master/docs/docs/query/queries.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="queries">Queries</h1>
+<p>The dataview query language is a simple, structured, custom query language for quickly creating views on your data. It
+supports:</p>
+<ul>
+<li>Fetching pages associated with tags, folders, links, and so on.</li>
+<li>Filtering pages / data by simple operations on fields, like comparison, existence checks, and so on.</li>
+<li>Sorting results based on fields.</li>
+</ul>
+<p>The query language supports the following view types, described below:</p>
+<ol>
+<li><strong>TABLE</strong>: The traditional view type; one row per data point, with several columns of field data.</li>
+<li><strong>LIST</strong>: A list of pages which match the query. You can output a single associated value for each page.</li>
+<li><strong>TASK</strong>: A list of tasks whose pages match the given query.</li>
+</ol>
+<h2 id="general-format">General Format</h2>
+<p>The general format for queries is:</p>
+<div class="highlight"><pre><span></span><code>```dataview
+TABLE|LIST|TASK &lt;field&gt; [AS &quot;Column Name&quot;], &lt;field&gt;, ..., &lt;field&gt; FROM &lt;source&gt;
+WHERE &lt;expression&gt;
+SORT &lt;expression&gt; [ASC/DESC]
+... other data commands
+```
+</code></pre></div>
+<p>Only the table/list/task statement is required - if the "from" statement is omitted, the query runs for all files in
+your vault. You can specify data commands like <code>WHERE</code> multiple times; they will simply run in the order they are written.</p>
+<h2 id="query-types">Query Types</h2>
+<h3 id="list-queries">List Queries</h3>
+<p>Lists are the simplest view, and simply render a list of pages (or custom fields) which match the query.
+To obtain a list of pages matching the query, simply use:</p>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>LIST FROM &lt;source&gt;
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">LIST</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">#</span><span class="n">games</span><span class="o">/</span><span class="n">mobas</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="o">#</span><span class="n">games</span><span class="o">/</span><span class="n">crpg</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Output</label><div class="tabbed-content">
+<ul>
+<li><a href="#">League of Legends</a></li>
+<li><a href="#">Pillars of Eternity 2</a></li>
+</ul>
+</div>
+</div>
+<p>You can render a single computed value in addition to each matching file, by adding an expression after <code>LIST</code>:</p>
+<div class="tabbed-set" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>LIST &lt;expression&gt; FROM &lt;source&gt;
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">LIST</span><span class="w"> </span><span class="ss">&quot;File Path: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">path</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;4. Archive&quot;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><label for="__tabbed_2_3">Output</label><div class="tabbed-content">
+<ul>
+<li><a href="#">2020-12-18 DN</a>: File path: 4. Archive/Daily Notes/2020-12-18 DN.md</li>
+<li><a href="#">2020-12-16 DN</a>: File path: 4. Archive/Daily Notes/2020-12-16 DN.md</li>
+<li><a href="#">2020-12-17 DN</a>: File path: 4. Archive/Daily Notes/2020-12-17 DN.md</li>
+<li><a href="#">2020-12-15 DN</a>: File path: 4. Archive/Daily Notes/2020-12-15 DN.md</li>
+</ul>
+</div>
+</div>
+<h5 id="list-without-id">LIST WITHOUT ID</h5>
+<p>If you don't want the file name / group key included in the list view, you can use <code>LIST WITHOUT ID</code>:</p>
+<div class="tabbed-set" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>LIST WITHOUT ID &lt;expression&gt; FROM &lt;source&gt;
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">LIST</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">path</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;4. Archive&quot;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><label for="__tabbed_3_3">Output</label><div class="tabbed-content">
+<ul>
+<li>
+<ol>
+<li>Archive/Daily Notes/2020-12-18 DN.md</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Archive/Daily Notes/2020-12-16 DN.md</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Archive/Daily Notes/2020-12-17 DN.md</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Archive/Daily Notes/2020-12-15 DN.md</li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+<hr />
+<h3 id="table-queries">Table Queries</h3>
+<p>Tables support tabular views of page data. You construct a table by giving a comma separated list of the YAML frontmatter fields you want to render, as so:</p>
+<div class="highlight"><pre><span></span><code>TABLE file.day, file.mtime FROM &lt;source&gt;
+</code></pre></div>
+<p>You can choose a heading name to render computed fields by using the <code>AS</code> syntax:</p>
+<div class="highlight"><pre><span></span><code>TABLE (file.mtime + dur(1 day)) AS next_mtime, ... FROM &lt;source&gt;
+</code></pre></div>
+<p>An example table query:</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">TABLE</span><span class="w"></span>
+<span class="w">  </span><span class="k">time</span><span class="o">-</span><span class="n">played</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Time Played&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">length</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Length&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">rating</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Rating&quot;</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="o">#</span><span class="n">game</span><span class="w"></span>
+<span class="n">SORT</span><span class="w"> </span><span class="n">rating</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Output</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Time Played</th>
+<th>Length</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#">Outer Wilds</a></td>
+<td>November 19th - 21st, 2020</td>
+<td>15h</td>
+<td>9.5</td>
+</tr>
+<tr>
+<td><a href="#">Minecraft</a></td>
+<td>All the time.</td>
+<td>2000h</td>
+<td>9.5</td>
+</tr>
+<tr>
+<td><a href="#">Pillars of Eternity 2</a></td>
+<td>August - October 2019</td>
+<td>100h</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h5 id="table-without-id">TABLE WITHOUT ID</h5>
+<p>If you don't want the default "File" or "Group" field in your output (either to replace it or because it is unneeded), you can use
+<code>TABLE WITHOUT ID</code>:</p>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">TABLE</span><span class="w"> </span><span class="k">WITHOUT</span><span class="w"> </span><span class="n">ID</span><span class="w"></span>
+<span class="w">  </span><span class="k">time</span><span class="o">-</span><span class="n">played</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Time Played&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">length</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Length&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">rating</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;Rating&quot;</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="o">#</span><span class="n">game</span><span class="w"></span>
+<span class="n">SORT</span><span class="w"> </span><span class="n">rating</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Output</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th>Time Played</th>
+<th>Length</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>November 19th - 21st, 2020</td>
+<td>15h</td>
+<td>9.5</td>
+</tr>
+<tr>
+<td>All the time.</td>
+<td>2000h</td>
+<td>9.5</td>
+</tr>
+<tr>
+<td>August - October 2019</td>
+<td>100h</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr />
+<h3 id="task-queries">Task Queries</h3>
+<p>Task views render all tasks whose pages match the given predicate.</p>
+<div class="tabbed-set" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>TASK FROM &lt;source&gt;
+</code></pre></div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">TASK</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;dataview&quot;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><label for="__tabbed_6_3">Output</label><div class="tabbed-content">
+<p><a href="#">dataview/Project A</a></p>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> I am a task.</li>
+<li class="task-list-item"><input type="checkbox" disabled/> I am another task.</li>
+</ul>
+<p><a href="#">dataview/Project A</a></p>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> I could be a task, though who knows.<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled checked/> Determine if this is a task.</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> I'm a finished task.</li>
+</ul>
+</div>
+</div>
+<p>You can filter (<code>WHERE</code>), group (<code>GROUP BY</code>), sort (<code>SORT</code>) tasks in these queries as desired using typical dataview
+statements:</p>
+<div class="tabbed-set" data-tabs="7:3"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>TASK FROM &lt;source&gt;
+WHERE &lt;predicate&gt;
+...
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>TASK FROM &quot;dataview&quot;
+WHERE !completed
+GROUP BY file.folder
+</code></pre></div>
+</div>
+<input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><label for="__tabbed_7_3">Output</label><div class="tabbed-content">
+<p>Folder 1</p>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> I am a task.</li>
+<li class="task-list-item"><input type="checkbox" disabled/> I am another task.</li>
+<li class="task-list-item"><input type="checkbox" disabled/> I am yet another task in another file in the same folder.</li>
+</ul>
+<p>Folder 2</p>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> I could be a task, though who knows.</li>
+</ul>
+<p>Folder 3</p>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> What even is a task, anyway?</li>
+</ul>
+</div>
+</div>
+<h3 id="calendar-queries">Calendar Queries</h3>
+<p>Calendar views render all pages which match the query in a calendar view, using
+the given date expression to chose which date to render a page on.</p>
+<div class="tabbed-set" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Syntax</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>CALENDAR &lt;date&gt;
+FROM &lt;source&gt;
+</code></pre></div>
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">CALENDAR</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">mtime</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;dataview&quot;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><label for="__tabbed_8_3">Output</label><div class="tabbed-content"></div>
+</div>
+<p>The output will be a calendar that displays a dot per file in the dataview
+directory. The dot will be placed on the date that the file was modified on.</p>
+<h2 id="data-commands">Data Commands</h2>
+<p>The different commands that dataview queries can be made up of. Commands are
+executed in order, and you can have duplicate commands (so multiple <code>WHERE</code>
+blocks or multiple <code>GROUP BY</code> blocks, for example).</p>
+<h3 id="from">FROM</h3>
+<p>The <code>FROM</code> statement determines what pages will initially be collected and passed onto the other commands for further
+filtering. You can select from any <a href="../sources">source</a>, which currently means by folder, by tag, or by incoming/outgoing links.</p>
+<ul>
+<li><strong>Tags</strong>: To select from a tag (and all its subtags), use <code>FROM #tag</code>.</li>
+<li><strong>Folders</strong>: To select from a folder (and all its subfolders), use <code>FROM "folder"</code>.</li>
+<li><strong>Single Files</strong>: To select from a single file, use <code>FROM "path/to/file"</code>.</li>
+<li><strong>Links</strong>: You can either select links TO a file, or all links FROM a file.</li>
+<li>To obtain all pages which link TO <code>[[note]]</code>, use <code>FROM [[note]]</code>.</li>
+<li>To obtain all pages which link FROM <code>[[note]]</code> (i.e., all the links in that file), use <code>FROM outgoing([[note]])</code>.</li>
+</ul>
+<p>You can compose these filters in order to get more advanced sources using <code>and</code> and <code>or</code>.</p>
+<ul>
+<li>For example, <code>#tag and "folder"</code> will return all pages in <code>folder</code> and with <code>#tag</code>.</li>
+<li><code>[[Food]] or [[Exercise]]</code> will give any pages which link to <code>[[Food]]</code> OR <code>[[Exercise]]</code>.</li>
+</ul>
+<p>You can also "negate" sources to obtain anything that does NOT match a source using <code>-</code>:</p>
+<ul>
+<li><code>-#tag</code> will exclude files which have the given tag.</li>
+<li><code>#tag and -"folder"</code> will only include files tagged <code>#tag</code> which are NOT in <code>"folder"</code>.</li>
+</ul>
+<h3 id="where">WHERE</h3>
+<p>Filter pages on fields. Only pages where the clause evaluates to <code>true</code> will be yielded.</p>
+<div class="highlight"><pre><span></span><code>WHERE &lt;clause&gt;
+</code></pre></div>
+<ol>
+<li>
+<p>Obtain all files which were modified in the last 24 hours:</p>
+<div class="highlight"><pre><span></span><code><span class="n">LIST</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">mtime</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">today</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dur</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">day</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+</li>
+<li>
+<p>Find all projects which are not marked complete and are more than a month old:</p>
+<div class="highlight"><pre><span></span><code><span class="n">LIST</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">#</span><span class="n">projects</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="o">!</span><span class="n">completed</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">ctime</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nb">date</span><span class="p">(</span><span class="n">today</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dur</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">month</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+</li>
+</ol>
+<h3 id="sort">SORT</h3>
+<p>Sorts all results by one or more fields.</p>
+<div class="highlight"><pre><span></span><code>SORT date [ASCENDING/DESCENDING/ASC/DESC]
+</code></pre></div>
+<p>You can also give multiple fields to sort by. Sorting will be done based on the first field. Then, if a tie occurs, the second field will be used to sort the tied fields. If there is still a tie, the third sort will resolve it, and so on.</p>
+<div class="highlight"><pre><span></span><code>SORT field1 [ASCENDING/DESCENDING/ASC/DESC], ..., fieldN [ASC/DESC]
+</code></pre></div>
+<h3 id="group-by">GROUP BY</h3>
+<p>Group all results on a field. Yields one row per unique field value, which has 2 properties: one corresponding to the field being grouped on, and a <code>rows</code> array field which contains all of the pages that matched.</p>
+<div class="highlight"><pre><span></span><code>GROUP BY field
+GROUP BY (computed_field) AS name
+</code></pre></div>
+<p>In order to make working with the <code>rows</code> array easier, Dataview supports field "swizzling". If you want the field <code>test</code> from every object in the <code>rows</code> array, then <code>rows.test</code> will automatically fetch the <code>test</code> field from every object in <code>rows</code>, yielding a new array.
+You can then apply aggregation operators like <code>sum()</code> over the resulting array.</p>
+<h3 id="flatten">FLATTEN</h3>
+<p>Flatten an array in every row, yielding one result row per entry in the array.</p>
+<div class="highlight"><pre><span></span><code>FLATTEN field
+FLATTEN (computed_field) AS name
+</code></pre></div>
+<p>For example, flatten the <code>authors</code> field in each literature note to give one row per author:</p>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Query</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">TABLE</span><span class="w"> </span><span class="n">authors</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">#</span><span class="n">LiteratureNote</span><span class="w"></span>
+<span class="n">FLATTEN</span><span class="w"> </span><span class="n">authors</span><span class="w"></span>
+</code></pre></div>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">Output</label><div class="tabbed-content">
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>authors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stegEnvironmentalPsychologyIntroduction2018 SN</td>
+<td>Steg, L.</td>
+</tr>
+<tr>
+<td>stegEnvironmentalPsychologyIntroduction2018 SN</td>
+<td>Van den Berg, A. E.</td>
+</tr>
+<tr>
+<td>stegEnvironmentalPsychologyIntroduction2018 SN</td>
+<td>De Groot, J. I. M.</td>
+</tr>
+<tr>
+<td>Soap Dragons SN</td>
+<td>Robert Lamb</td>
+</tr>
+<tr>
+<td>Soap Dragons SN</td>
+<td>Joe McCormick</td>
+</tr>
+<tr>
+<td>smithPainAssaultSelf2007 SN</td>
+<td>Jonathan A. Smith</td>
+</tr>
+<tr>
+<td>smithPainAssaultSelf2007 SN</td>
+<td>Mike Osborn</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="limit">LIMIT</h3>
+<p>Restrict the results to at most N values.</p>
+<div class="highlight"><pre><span></span><code>LIMIT 5
+</code></pre></div>
+<p>Commands are processed in the order they are written, so the following sorts the results <em>after</em> they have already been limited:</p>
+<div class="highlight"><pre><span></span><code>LIMIT 5
+SORT date ASCENDING
+</code></pre></div>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../../data-queries/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Data Querying" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Data Querying
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../expressions/" class="md-footer__link md-footer__link--next" aria-label="Next: Expressions" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Expressions
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a877e258.min.js"></script>
+      
+    
+  </body>
+</html>

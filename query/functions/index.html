@@ -1,0 +1,1754 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/obsidian.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
+    
+    
+      
+        <title>Functions - Dataview</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Dataview" class="md-header__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dataview
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Dataview" class="md-nav__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    Dataview
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-annotation/" class="md-nav__link">
+        Data Annotation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-queries/" class="md-nav__link">
+        Data Querying
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Query Language Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Query Language Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Query Language Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queries/" class="md-nav__link">
+        Queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expressions/" class="md-nav__link">
+        Expressions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../literals/" class="md-nav__link">
+        Literals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        Sources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Functions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Functions
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-vectorization" class="md-nav__link">
+    Function Vectorization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    Constructors
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectkey1-value1" class="md-nav__link">
+    object(key1, value1, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listvalue1-value2" class="md-nav__link">
+    list(value1, value2, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dateany" class="md-nav__link">
+    date(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#durany" class="md-nav__link">
+    dur(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numberstring" class="md-nav__link">
+    number(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stringany" class="md-nav__link">
+    string(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkpath-display" class="md-nav__link">
+    link(path, [display])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedlink-embed" class="md-nav__link">
+    embed(link, [embed?])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elinkurl-display" class="md-nav__link">
+    elink(url, [display])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeofany" class="md-nav__link">
+    typeof(any)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-operations" class="md-nav__link">
+    Numeric Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Numeric Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roundnumber-digits" class="md-nav__link">
+    round(number, [digits])
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objects-arrays-and-string-operations" class="md-nav__link">
+    Objects, Arrays, and String Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Objects, Arrays, and String Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#containsobjectliststring-value" class="md-nav__link">
+    contains(object|list|string, value)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extractobject-key1-key2" class="md-nav__link">
+    extract(object, key1, key2, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sortlist" class="md-nav__link">
+    sort(list)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverselist" class="md-nav__link">
+    reverse(list)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lengthobjectarray" class="md-nav__link">
+    length(object|array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sumarray" class="md-nav__link">
+    sum(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allarray" class="md-nav__link">
+    all(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anyarray" class="md-nav__link">
+    any(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nonearray" class="md-nav__link">
+    none(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joinarray" class="md-nav__link">
+    join(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filterarray-predicate" class="md-nav__link">
+    filter(array, predicate)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maparray-func" class="md-nav__link">
+    map(array, func)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-operations" class="md-nav__link">
+    String Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="String Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regexmatchpattern-string" class="md-nav__link">
+    regexmatch(pattern, string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regexreplacestring-pattern-replacement" class="md-nav__link">
+    regexreplace(string, pattern, replacement)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replacestring-pattern-replacement" class="md-nav__link">
+    replace(string, pattern, replacement)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lowerstring" class="md-nav__link">
+    lower(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upperstring" class="md-nav__link">
+    upper(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitstring-delimiter-limit" class="md-nav__link">
+    split(string, delimiter, [limit])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#startswithstring-prefix" class="md-nav__link">
+    startswith(string, prefix)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#endswithstring-suffix" class="md-nav__link">
+    endswith(string, suffix)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padleftstring-length-padding" class="md-nav__link">
+    padleft(string, length, [padding])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padrightstring-length-padding" class="md-nav__link">
+    padright(string, length, [padding])
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utility-functions" class="md-nav__link">
+    Utility Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Utility Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaultfield-value" class="md-nav__link">
+    default(field, value)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choicebool-left-right" class="md-nav__link">
+    choice(bool, left, right)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#striptimedate" class="md-nav__link">
+    striptime(date)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localtimedate" class="md-nav__link">
+    localtime(date)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalink" class="md-nav__link">
+    meta(link)
+  </a>
+  
+    <nav class="md-nav" aria-label="meta(link)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metalinkdisplay" class="md-nav__link">
+    meta(link).display
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinkembed" class="md-nav__link">
+    meta(link).embed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinkpath" class="md-nav__link">
+    meta(link).path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinksubpath" class="md-nav__link">
+    meta(link).subpath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinktype" class="md-nav__link">
+    meta(link).type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          JavaScript Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="JavaScript Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          JavaScript Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/intro/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/data-array/" class="md-nav__link">
+        Data Arrays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-reference/" class="md-nav__link">
+        Codeblock Reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-examples/" class="md-nav__link">
+        Codeblock Examples
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Plugin Developers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Plugin Developers" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Plugin Developers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugin/develop-against-dataview/" class="md-nav__link">
+        Developing Against Dataview
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../friends/" class="md-nav__link">
+        Friends of Dataview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-vectorization" class="md-nav__link">
+    Function Vectorization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    Constructors
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectkey1-value1" class="md-nav__link">
+    object(key1, value1, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listvalue1-value2" class="md-nav__link">
+    list(value1, value2, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dateany" class="md-nav__link">
+    date(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#durany" class="md-nav__link">
+    dur(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numberstring" class="md-nav__link">
+    number(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stringany" class="md-nav__link">
+    string(any)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkpath-display" class="md-nav__link">
+    link(path, [display])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedlink-embed" class="md-nav__link">
+    embed(link, [embed?])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elinkurl-display" class="md-nav__link">
+    elink(url, [display])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeofany" class="md-nav__link">
+    typeof(any)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-operations" class="md-nav__link">
+    Numeric Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Numeric Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roundnumber-digits" class="md-nav__link">
+    round(number, [digits])
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objects-arrays-and-string-operations" class="md-nav__link">
+    Objects, Arrays, and String Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Objects, Arrays, and String Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#containsobjectliststring-value" class="md-nav__link">
+    contains(object|list|string, value)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extractobject-key1-key2" class="md-nav__link">
+    extract(object, key1, key2, ...)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sortlist" class="md-nav__link">
+    sort(list)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverselist" class="md-nav__link">
+    reverse(list)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lengthobjectarray" class="md-nav__link">
+    length(object|array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sumarray" class="md-nav__link">
+    sum(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allarray" class="md-nav__link">
+    all(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anyarray" class="md-nav__link">
+    any(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nonearray" class="md-nav__link">
+    none(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joinarray" class="md-nav__link">
+    join(array)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filterarray-predicate" class="md-nav__link">
+    filter(array, predicate)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maparray-func" class="md-nav__link">
+    map(array, func)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-operations" class="md-nav__link">
+    String Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="String Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regexmatchpattern-string" class="md-nav__link">
+    regexmatch(pattern, string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regexreplacestring-pattern-replacement" class="md-nav__link">
+    regexreplace(string, pattern, replacement)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replacestring-pattern-replacement" class="md-nav__link">
+    replace(string, pattern, replacement)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lowerstring" class="md-nav__link">
+    lower(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upperstring" class="md-nav__link">
+    upper(string)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitstring-delimiter-limit" class="md-nav__link">
+    split(string, delimiter, [limit])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#startswithstring-prefix" class="md-nav__link">
+    startswith(string, prefix)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#endswithstring-suffix" class="md-nav__link">
+    endswith(string, suffix)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padleftstring-length-padding" class="md-nav__link">
+    padleft(string, length, [padding])
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#padrightstring-length-padding" class="md-nav__link">
+    padright(string, length, [padding])
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utility-functions" class="md-nav__link">
+    Utility Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Utility Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaultfield-value" class="md-nav__link">
+    default(field, value)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choicebool-left-right" class="md-nav__link">
+    choice(bool, left, right)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#striptimedate" class="md-nav__link">
+    striptime(date)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localtimedate" class="md-nav__link">
+    localtime(date)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalink" class="md-nav__link">
+    meta(link)
+  </a>
+  
+    <nav class="md-nav" aria-label="meta(link)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metalinkdisplay" class="md-nav__link">
+    meta(link).display
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinkembed" class="md-nav__link">
+    meta(link).embed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinkpath" class="md-nav__link">
+    meta(link).path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinksubpath" class="md-nav__link">
+    meta(link).subpath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metalinktype" class="md-nav__link">
+    meta(link).type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/blacksmithgu/obsidian-dataview/edit/master/docs/docs/query/functions.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="functions">Functions</h1>
+<p>Dataview functions provide more advanced ways to manipulate data.</p>
+<h2 id="function-vectorization">Function Vectorization</h2>
+<p>Most functions can be applied either to single values (like <code>number</code>, <code>string</code>, <code>date</code>, etc.) OR to lists of those
+values. If a function is applied to a list, it also returns a list after the function is applied to each element
+in the list. For example:</p>
+<div class="highlight"><pre><span></span><code>lower(&quot;YES&quot;) = &quot;yes&quot;
+lower([&quot;YES&quot;, &quot;NO&quot;]) = [&quot;yes&quot;, &quot;no&quot;]
+
+replace(&quot;yes&quot;, &quot;e&quot;, &quot;a&quot;) = &quot;yas&quot;
+replace([&quot;yes&quot;, &quot;ree&quot;], &quot;e&quot;, &quot;a&quot;) = [&quot;yas&quot;, &quot;raa&quot;]
+</code></pre></div>
+<h2 id="constructors">Constructors</h2>
+<p>Constructors which create values.</p>
+<h3 id="objectkey1-value1"><code>object(key1, value1, ...)</code></h3>
+<p>Creates a new object with the given keys and values. Keys and values should alternate in the call, and keys should
+always be strings/text.</p>
+<div class="highlight"><pre><span></span><code>object() =&gt; empty object
+object(&quot;a&quot;, 6) =&gt; object which maps &quot;a&quot; to 6
+object(&quot;a&quot;, 4, &quot;c&quot;, &quot;yes&quot;) =&gt; object which maps a to 4, and c to &quot;yes&quot;
+</code></pre></div>
+<h3 id="listvalue1-value2"><code>list(value1, value2, ...)</code></h3>
+<p>Creates a new list with the given values in it.</p>
+<div class="highlight"><pre><span></span><code>list() =&gt; empty list
+list(1, 2, 3) =&gt; list with 1, 2, and 3
+list(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) =&gt; list with &quot;a&quot;, &quot;b&quot;, and &quot;c&quot;
+</code></pre></div>
+<h3 id="dateany"><code>date(any)</code></h3>
+<p>Parses a date from the provided string, date, or link object, if possible, returning null otherwise.</p>
+<div class="highlight"><pre><span></span><code>date(&quot;2020-04-18&quot;) = &lt;date object representing April 18th, 2020&gt;
+date([[2021-04-16]]) = &lt;date object for the given page, refering to file.day&gt;
+</code></pre></div>
+<h3 id="durany"><code>dur(any)</code></h3>
+<p>Parses a duration from the provided string or duration, returning null on failure.</p>
+<div class="highlight"><pre><span></span><code>dur(8 minutes) = &lt;8 minutes&gt;
+dur(&quot;8 minutes, 4 seconds&quot;) = &lt;8 minutes, 4 seconds&gt;
+dur(dur(8 minutes)) = dur(8 minutes) = &lt;8 minutes&gt;
+</code></pre></div>
+<h3 id="numberstring"><code>number(string)</code></h3>
+<p>Pulls the first number out of the given string, returning it if possible. Returns null if there are no numbers in the
+string.</p>
+<div class="highlight"><pre><span></span><code>number(&quot;18 years&quot;) = 18
+number(34) = 34
+number(&quot;hmm&quot;) = null
+</code></pre></div>
+<h3 id="stringany"><code>string(any)</code></h3>
+<p>Converts any value into a "reasonable" string representation. This sometimes produces less pretty results than just directly using
+the value in a query - it is mostly useful for coercing dates, durations, numbers, and so on into strings for
+manipulation.</p>
+<div class="highlight"><pre><span></span><code>string(18) = &quot;18&quot;
+string(dur(8 hours)) = &quot;8 hours&quot;
+string(date(2021-08-15)) = &quot;August 15th, 2021&quot;
+</code></pre></div>
+<h3 id="linkpath-display"><code>link(path, [display])</code></h3>
+<p>Construct a link object from the given file path or name. If provided with two arguments, the second argument is the
+display name for the link.</p>
+<div class="highlight"><pre><span></span><code>link(&quot;Hello&quot;) =&gt; link to page named &#39;Hello&#39;
+link(&quot;Hello&quot;, &quot;Goodbye&quot;) =&gt; link to page named &#39;Hello&#39;, displays as &#39;Goodbye&#39;
+</code></pre></div>
+<h3 id="embedlink-embed"><code>embed(link, [embed?])</code></h3>
+<p>Convert a link object into an embedded link; support for embedded links is somewhat spotty in Dataview views, though
+embedding of images should work.</p>
+<div class="highlight"><pre><span></span><code>embed(link(&quot;Hello.png&quot;)) =&gt; embedded link to the &quot;Hello.png&quot; image, which will render as an actual image.
+</code></pre></div>
+<h3 id="elinkurl-display"><code>elink(url, [display])</code></h3>
+<p>Construct a link to an external url (like <code>www.google.com</code>). If provided with two arguments, the second
+argument is the display name for the link.</p>
+<div class="highlight"><pre><span></span><code>elink(&quot;www.google.com&quot;) =&gt; link element to google.com
+elink(&quot;www.google.com&quot;, &quot;Google&quot;) =&gt; link element to google.com, displays as &quot;Google&quot;
+</code></pre></div>
+<h3 id="typeofany"><code>typeof(any)</code></h3>
+<p>Get the type of any object for inspection. Can be used in conjunction with other operators to change behavior based on type.</p>
+<div class="highlight"><pre><span></span><code>typeof(8) =&gt; &quot;number&quot;
+typeof(&quot;text&quot;) =&gt; &quot;string&quot;
+typeof([1, 2, 3]) =&gt; &quot;array&quot;
+typeof({ a: 1, b: 2 }) =&gt; &quot;object&quot;
+typeof(date(2020-01-01)) =&gt; &quot;date&quot;
+typeof(dur(8 minutes)) =&gt; &quot;duration&quot;
+</code></pre></div>
+<hr />
+<h2 id="numeric-operations">Numeric Operations</h2>
+<h3 id="roundnumber-digits"><code>round(number, [digits])</code></h3>
+<p>Round a number to a given number of digits. If the second argument is not specified, rounds to the nearest whole number;
+otherwise, rounds to the given number of digits.</p>
+<div class="highlight"><pre><span></span><code>round(16.555555) = 7
+round(16.555555, 2) = 16.56
+</code></pre></div>
+<p>--</p>
+<h2 id="objects-arrays-and-string-operations">Objects, Arrays, and String Operations</h2>
+<p>Operations that manipulate values inside of container objects.</p>
+<h3 id="containsobjectliststring-value"><code>contains(object|list|string, value)</code></h3>
+<p>Checks if the given container type has the given value in it. This function behave slightly differently based on whether
+the first argument is an object, a list, or a string.</p>
+<ul>
+<li>For objects, checks if the object has a key with the given name. For example,
+    <div class="highlight"><pre><span></span><code>contains(file, &quot;ctime&quot;) = true
+contains(file, &quot;day&quot;) = true (if file has a date in its title, false otherwise)
+</code></pre></div></li>
+<li>For lists, checks if any of the array elements equals the given value. For example,
+    <div class="highlight"><pre><span></span><code>contains(list(1, 2, 3), 3) = true
+contains(list(), 1) = false
+</code></pre></div></li>
+<li>For strings, checks if the given value is a substring (i.e., inside) the string.
+    <div class="highlight"><pre><span></span><code>contains(&quot;hello&quot;, &quot;lo&quot;) = true
+contains(&quot;yes&quot;, &quot;no&quot;) = false
+</code></pre></div></li>
+</ul>
+<h3 id="extractobject-key1-key2"><code>extract(object, key1, key2, ...)</code></h3>
+<p>Pulls multiple fields out of an object, creating a new object with just those fields.</p>
+<div class="highlight"><pre><span></span><code>extract(file, &quot;ctime&quot;, &quot;mtime&quot;) = object(&quot;ctime&quot;, file.ctime, &quot;mtime&quot;, file.mtime)
+extract(object(&quot;test&quot;, 1)) = object()
+</code></pre></div>
+<h3 id="sortlist"><code>sort(list)</code></h3>
+<p>Sorts a list, returning a new list in sorted order.</p>
+<div class="highlight"><pre><span></span><code>sort(list(3, 2, 1)) = list(1, 2, 3)
+sort(list(&quot;a&quot;, &quot;b&quot;, &quot;aa&quot;)) = list(&quot;a&quot;, &quot;aa&quot;, &quot;b&quot;)
+</code></pre></div>
+<h3 id="reverselist"><code>reverse(list)</code></h3>
+<p>Reverses a list, returning a new list in reversed order.</p>
+<div class="highlight"><pre><span></span><code>reverse(list(1, 2, 3)) = list(3, 2, 1)
+reverse(list(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)) = list(&quot;c&quot;, &quot;b&quot;, &quot;a&quot;)
+</code></pre></div>
+<h3 id="lengthobjectarray"><code>length(object|array)</code></h3>
+<p>Returns the number of fields in an object, or the number of entries in an array.</p>
+<div class="highlight"><pre><span></span><code>length(list()) = 0
+length(list(1, 2, 3)) = 3
+length(object(&quot;hello&quot;, 1, &quot;goodbye&quot;, 2)) = 2
+</code></pre></div>
+<h3 id="sumarray"><code>sum(array)</code></h3>
+<p>Sums all numeric values in the array</p>
+<div class="highlight"><pre><span></span><code>sum(list(1, 2, 3)) = 6
+</code></pre></div>
+<h3 id="allarray"><code>all(array)</code></h3>
+<p>Returns <code>true</code> only if ALL values in the array are truthy. You can also pass multiple arguments to this function, in
+which case it returns <code>true</code> only if all arguments are truthy.</p>
+<div class="highlight"><pre><span></span><code>all(list(1, 2, 3)) = true
+all(list(true, false)) = false
+all(true, false) = false
+all(true, true, true) = true
+</code></pre></div>
+<h3 id="anyarray"><code>any(array)</code></h3>
+<p>Returns <code>true</code> if ANY of the values in the array are truthy. You can also pass multiple arguments to this function, in
+which case it returns <code>true</code> if any of the arguments are truthy.</p>
+<div class="highlight"><pre><span></span><code>any(list(1, 2, 3)) = true
+any(list(true, false)) = true
+any(list(false, false, false)) = false
+all(true, false) = true
+all(false, false) = false
+</code></pre></div>
+<h3 id="nonearray"><code>none(array)</code></h3>
+<p>Returns <code>true</code> if NONE of the values in the array are truthy.</p>
+<div class="highlight"><pre><span></span><code>none([]) = true
+none([false, false]) = true
+none([false, true]) = false
+none([1, 2, 3]) = false
+</code></pre></div>
+<h3 id="joinarray"><code>join(array)</code></h3>
+<p>Joins elements in an array into a single string (i.e., rendering them all on the same line). If provided with a second
+argument, then each element will be separated by the given separator.</p>
+<div class="highlight"><pre><span></span><code>join(list(1, 2, 3)) = &quot;1, 2, 3&quot;
+join(list(1, 2, 3), &quot; &quot;) = &quot;1 2 3&quot;
+join(6) = &quot;6&quot;
+join(list()) = &quot;&quot;
+</code></pre></div>
+<h3 id="filterarray-predicate"><code>filter(array, predicate)</code></h3>
+<p>Filters elements in an array according to the predicate, returning a new list of the elements which matched.</p>
+<div class="highlight"><pre><span></span><code>filter([1, 2, 3], (x) =&gt; x &gt;= 2) = [2, 3]
+filter([&quot;yes&quot;, &quot;no&quot;, &quot;yas&quot;], (x) =&gt; startswith(x, &quot;y&quot;)) = [&quot;yes&quot;, &quot;yas&quot;]
+</code></pre></div>
+<h3 id="maparray-func"><code>map(array, func)</code></h3>
+<p>Applies the function to each element in the array, returning a list of the mapped results.</p>
+<div class="highlight"><pre><span></span><code>map([1, 2, 3], (x) =&gt; x + 2) = [3, 4, 5]
+map([&quot;yes&quot;, &quot;no&quot;], (x) =&gt; x + &quot;?&quot;) = [&quot;yes?&quot;, &quot;no?&quot;]
+</code></pre></div>
+<hr />
+<h2 id="string-operations">String Operations</h2>
+<h3 id="regexmatchpattern-string"><code>regexmatch(pattern, string)</code></h3>
+<p>Checks if the given string matches the given pattern (using the JavaScript regex engine).</p>
+<div class="highlight"><pre><span></span><code>regexmatch(&quot;\w+&quot;, &quot;hello&quot;) = true
+regexmatch(&quot;.&quot;, &quot;a&quot;) = true
+regexmatch(&quot;yes|no&quot;, &quot;maybe&quot;) = false
+</code></pre></div>
+<h3 id="regexreplacestring-pattern-replacement"><code>regexreplace(string, pattern, replacement)</code></h3>
+<p>Replaces all instances where the <em>regex</em> <code>pattern</code> matches in <code>string</code>, with <code>replacement</code>. This uses the JavaScript
+replace method under the hood, so you can use special characters like <code>$1</code> to refer to the first capture group, and so on.</p>
+<div class="highlight"><pre><span></span><code>regexreplace(&quot;yes&quot;, &quot;[ys]&quot;, &quot;a&quot;) = &quot;aea&quot;
+regexreplace(&quot;Suite 1000&quot;, &quot;\d+&quot;, &quot;-&quot;) = &quot;Suite -&quot;
+</code></pre></div>
+<h3 id="replacestring-pattern-replacement"><code>replace(string, pattern, replacement)</code></h3>
+<p>Replace all instances of <code>pattern</code> in <code>string</code> with <code>replacement</code>.</p>
+<div class="highlight"><pre><span></span><code>replace(&quot;what&quot;, &quot;wh&quot;, &quot;h&quot;) = &quot;hat&quot;
+replace(&quot;The big dog chased the big cat.&quot;, &quot;big&quot;, &quot;small&quot;) = &quot;The small dog chased the small cat.&quot;
+replace(&quot;test&quot;, &quot;test&quot;, &quot;no&quot;) = &quot;no&quot;
+</code></pre></div>
+<h3 id="lowerstring"><code>lower(string)</code></h3>
+<p>Convert a string to all lower case.</p>
+<div class="highlight"><pre><span></span><code>lower(&quot;Test&quot;) = &quot;test&quot;
+lower(&quot;TEST&quot;) = &quot;test&quot;
+</code></pre></div>
+<h3 id="upperstring"><code>upper(string)</code></h3>
+<p>Convert a string to all upper case.</p>
+<div class="highlight"><pre><span></span><code>upper(&quot;Test&quot;) = &quot;TEST&quot;
+upper(&quot;test&quot;) = &quot;TEST&quot;
+</code></pre></div>
+<h3 id="splitstring-delimiter-limit"><code>split(string, delimiter, [limit])</code></h3>
+<p>Split a string on the given delimiter string. If a third argument is provided, it limits the number of splits that occur. The delimiter string is interpreted as a regular expression. If there are capture groups in the delimiter, matches are spliced into the result array, and non-matching captures are empty strings.</p>
+<div class="highlight"><pre><span></span><code>split(&quot;hello world&quot;, &quot; &quot;) = list(&quot;hello&quot;, &quot;world&quot;)
+split(&quot;hello  world&quot;, &quot;\s&quot;) = list(&quot;hello&quot;, &quot;world&quot;)
+split(&quot;hello there world&quot;, &quot; &quot;, 2) = list(&quot;hello&quot;, &quot;there&quot;)
+split(&quot;hello there world&quot;, &quot;(t?here)&quot;) = list(&quot;hello &quot;, &quot;there&quot;, &quot; world&quot;)
+split(&quot;hello there world&quot;, &quot;( )(x)?&quot;) = list(&quot;hello&quot;, &quot; &quot;, &quot;&quot;, &quot;there&quot;, &quot; &quot;, &quot;&quot;, &quot;world&quot;)
+</code></pre></div>
+<h3 id="startswithstring-prefix"><code>startswith(string, prefix)</code></h3>
+<p>Checks if a string starts with the given prefix.</p>
+<div class="highlight"><pre><span></span><code>startswith(&quot;yes&quot;, &quot;ye&quot;) = true
+startswith(&quot;path/to/something&quot;, &quot;path/&quot;) = true
+startswith(&quot;yes&quot;, &quot;no&quot;) = false
+</code></pre></div>
+<h3 id="endswithstring-suffix"><code>endswith(string, suffix)</code></h3>
+<p>Checks if a string ends with the given suffix.</p>
+<div class="highlight"><pre><span></span><code>endswith(&quot;yes&quot;, &quot;es&quot;) = true
+endswith(&quot;path/to/something&quot;, &quot;something&quot;) = true
+endswith(&quot;yes&quot;, &quot;ye&quot;) = false
+</code></pre></div>
+<h3 id="padleftstring-length-padding"><code>padleft(string, length, [padding])</code></h3>
+<p>Pads a string up to the desired length by adding padding on the left side. If you omit the padding character, spaces
+will be used by default.</p>
+<div class="highlight"><pre><span></span><code>padleft(&quot;hello&quot;, 7) = &quot;  hello&quot;
+padleft(&quot;yes&quot;, 5, &quot;!&quot;) = &quot;!!yes&quot;
+</code></pre></div>
+<h3 id="padrightstring-length-padding"><code>padright(string, length, [padding])</code></h3>
+<p>Equivalent to <code>padleft</code>, but pads to the right instead.</p>
+<div class="highlight"><pre><span></span><code>padright(&quot;hello&quot;, 7) = &quot;hello  &quot;
+padright(&quot;yes&quot;, 5, &quot;!&quot;) = &quot;yes!!&quot;
+</code></pre></div>
+<h2 id="utility-functions">Utility Functions</h2>
+<h3 id="defaultfield-value"><code>default(field, value)</code></h3>
+<p>If <code>field</code> is null, return <code>value</code>; otherwise return <code>field</code>. Useful for replacing null values with defaults. For example, to show projects which haven't been completed yet, use <code>"incomplete"</code> as their defualt value:</p>
+<div class="highlight"><pre><span></span><code>default(dateCompleted, &quot;incomplete&quot;)
+</code></pre></div>
+<p>Default is vectorized in both arguments; if you need to use default explicitly on a list argument, use <code>ldefault</code>, which
+is the same as default but is not vectorized.</p>
+<div class="highlight"><pre><span></span><code>default(list(1, 2, null), 3) = list(1, 2, 3)
+ldefault(list(1, 2, null), 3) = list(1, 2, null)
+</code></pre></div>
+<h3 id="choicebool-left-right"><code>choice(bool, left, right)</code></h3>
+<p>A primitive if statement - if the first argument is truthy, returns left; otherwise, returns right.</p>
+<div class="highlight"><pre><span></span><code>choice(true, &quot;yes&quot;, &quot;no&quot;) = &quot;yes&quot;
+choice(false, &quot;yes&quot;, &quot;no&quot;) = &quot;no&quot;
+choice(x &gt; 4, y, z) = y if x &gt; 4, else z
+</code></pre></div>
+<h3 id="striptimedate"><code>striptime(date)</code></h3>
+<p>Strip the time component of a date, leaving only the year, month, and day. Good for date comparisons if you don't care
+about the time.</p>
+<div class="highlight"><pre><span></span><code>striptime(file.ctime) = file.cday
+striptime(file.mtime) = file.mday
+</code></pre></div>
+<h3 id="localtimedate"><code>localtime(date)</code></h3>
+<p>Converts a date in a fixed timezone to a date in the current timezone.</p>
+<h3 id="metalink"><code>meta(link)</code></h3>
+<p>Get an object containing metadata of a link. When you access a property on a link what you get back is the property
+value from the linked file. The <code>meta</code> function makes it possible to access properties of the link itself.</p>
+<p>There are several properties on the object returned by <code>meta</code>:</p>
+<h4 id="metalinkdisplay"><code>meta(link).display</code></h4>
+<p>Get the display text of a link, or null if the link does not have defined display text.</p>
+<div class="highlight"><pre><span></span><code>meta([[2021-11-01|Displayed link text]]).display = &quot;Displayed link text&quot;
+meta([[2021-11-01]]).display = null
+</code></pre></div>
+<h4 id="metalinkembed"><code>meta(link).embed</code></h4>
+<p>True or false depending on whether the link is an embed. Those are links that begin with an exclamation mark, like
+<code>![[Some Link]]</code>.</p>
+<h4 id="metalinkpath"><code>meta(link).path</code></h4>
+<p>Get the path portion of a link.</p>
+<div class="highlight"><pre><span></span><code>meta([[My Project]]).path = &quot;My Project&quot;
+meta([[My Project#Next Actions]]).path = &quot;My Project&quot;
+meta([[My Project#^9bcbe8]]).path = &quot;My Project&quot;
+</code></pre></div>
+<h4 id="metalinksubpath"><code>meta(link).subpath</code></h4>
+<p>Get the subpath of a link. For links to a heading within a file the subpath will be the text of the heading. For links
+to a block the subpath will be the block ID. If neither of those cases applies then the subpath will be null.</p>
+<div class="highlight"><pre><span></span><code>meta([[My Project#Next Actions]]).subpath = &quot;Next Actions&quot;
+meta([[My Project#^9bcbe8]]).subpath = &quot;9bcbe8&quot;
+meta([[My Project]]).subpath = null
+</code></pre></div>
+<p>This can be used to select tasks under specific headings.</p>
+<div class="highlight"><pre><span></span><code>```dataview
+task
+where meta(section).subpath = &quot;Next Actions&quot;
+```
+</code></pre></div>
+<h4 id="metalinktype"><code>meta(link).type</code></h4>
+<p>Has the value "file", "header", or "block" depending on whether the link links to an entire file, a heading within
+a file, or to a block within a file.</p>
+<div class="highlight"><pre><span></span><code>meta([[My Project]]).type = &quot;file&quot;
+meta([[My Project#Next Actions]]).type = &quot;header&quot;
+meta([[My Project#^9bcbe8]]).type = &quot;block&quot;
+</code></pre></div>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../sources/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sources" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Sources
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../examples/" class="md-footer__link md-footer__link--next" aria-label="Next: Examples" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Examples
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a877e258.min.js"></script>
+      
+    
+  </body>
+</html>

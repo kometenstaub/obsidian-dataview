@@ -1,0 +1,1220 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/obsidian.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
+    
+    
+      
+        <title>Literals - Dataview</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#literals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Dataview" class="md-header__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dataview
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Literals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Dataview" class="md-nav__button md-logo" aria-label="Dataview" data-md-component="logo">
+      
+  <img src="../../assets/obsidian.png" alt="logo">
+
+    </a>
+    Dataview
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/blacksmithgu/obsidian-dataview" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-annotation/" class="md-nav__link">
+        Data Annotation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-queries/" class="md-nav__link">
+        Data Querying
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Query Language Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Query Language Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Query Language Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queries/" class="md-nav__link">
+        Queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expressions/" class="md-nav__link">
+        Expressions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Literals
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Literals
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    General
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dates" class="md-nav__link">
+    Dates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#durations" class="md-nav__link">
+    Durations
+  </a>
+  
+    <nav class="md-nav" aria-label="Durations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seconds" class="md-nav__link">
+    Seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minutes" class="md-nav__link">
+    Minutes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hours" class="md-nav__link">
+    Hours
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#days" class="md-nav__link">
+    Days
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weeks" class="md-nav__link">
+    Weeks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#months" class="md-nav__link">
+    Months
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#years" class="md-nav__link">
+    Years
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combinations" class="md-nav__link">
+    Combinations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        Sources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        Functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          JavaScript Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="JavaScript Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          JavaScript Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/intro/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/data-array/" class="md-nav__link">
+        Data Arrays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-reference/" class="md-nav__link">
+        Codeblock Reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/code-examples/" class="md-nav__link">
+        Codeblock Examples
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Plugin Developers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Plugin Developers" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Plugin Developers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugin/develop-against-dataview/" class="md-nav__link">
+        Developing Against Dataview
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../friends/" class="md-nav__link">
+        Friends of Dataview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    General
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dates" class="md-nav__link">
+    Dates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#durations" class="md-nav__link">
+    Durations
+  </a>
+  
+    <nav class="md-nav" aria-label="Durations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seconds" class="md-nav__link">
+    Seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minutes" class="md-nav__link">
+    Minutes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hours" class="md-nav__link">
+    Hours
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#days" class="md-nav__link">
+    Days
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weeks" class="md-nav__link">
+    Weeks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#months" class="md-nav__link">
+    Months
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#years" class="md-nav__link">
+    Years
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combinations" class="md-nav__link">
+    Combinations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/blacksmithgu/obsidian-dataview/edit/master/docs/docs/query/literals.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="literals">Literals</h1>
+<p>Dataview query language <em>literals</em> are expressions which represent constant values like <code>"hello"</code> or <code>1337</code>.</p>
+<p>The following is an extensive, but non-exhaustive list of possible literals in DQL.</p>
+<h3 id="general">General</h3>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>The number zero</td>
+</tr>
+<tr>
+<td><code>1337</code></td>
+<td>A positive number</td>
+</tr>
+<tr>
+<td><code>-1337</code></td>
+<td>A negative number</td>
+</tr>
+<tr>
+<td><code>"The quick brown fox jumps over the lazy dog"</code></td>
+<td>Some text, commonly referred to by programmers as a <em>string</em></td>
+</tr>
+<tr>
+<td><code>[[Link]]</code></td>
+<td>A link to the file named "Link"</td>
+</tr>
+<tr>
+<td><code>[[]]</code></td>
+<td>A link to the current file</td>
+</tr>
+<tr>
+<td><code>[1, 2, 3]</code></td>
+<td>A list of numbers 1, 2, and 3</td>
+</tr>
+<tr>
+<td><code>[[1, 2],[3, 4]]</code></td>
+<td>A list of lists</td>
+</tr>
+<tr>
+<td><code>{ a: 1, b: 2 }</code></td>
+<td>An object</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dates">Dates</h3>
+<p>Note that <code>date()</code> is also a <a href="../functions/#dateany">function</a>, which can be called on text to extract dates.</p>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date(2021-11-11)</code></td>
+<td>A date, November 11th, 2021</td>
+</tr>
+<tr>
+<td><code>date(today)</code></td>
+<td>A date representing the current date</td>
+</tr>
+<tr>
+<td><code>date(now)</code></td>
+<td>A date representing the current date and time</td>
+</tr>
+<tr>
+<td><code>date(tomorrow)</code></td>
+<td>A date representing tomorrow's date</td>
+</tr>
+<tr>
+<td><code>date(yesterday)</code></td>
+<td>A date representing yesterday's date</td>
+</tr>
+<tr>
+<td><code>date(sow)</code></td>
+<td>A date representing the start of the current week</td>
+</tr>
+<tr>
+<td><code>date(eow)</code></td>
+<td>A date representing the end of the current week</td>
+</tr>
+<tr>
+<td><code>date(som)</code></td>
+<td>A date representing the start of the current month</td>
+</tr>
+<tr>
+<td><code>date(eom)</code></td>
+<td>A date representing the end of the current month</td>
+</tr>
+<tr>
+<td><code>date(soy)</code></td>
+<td>A date representing the start of the current year</td>
+</tr>
+<tr>
+<td><code>date(eoy)</code></td>
+<td>A date representing the end of the current year</td>
+</tr>
+</tbody>
+</table>
+<h3 id="durations">Durations</h3>
+<h4 id="seconds">Seconds</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 s)</code></td>
+<td>one second</td>
+</tr>
+<tr>
+<td><code>dur(3 s)</code></td>
+<td>three seconds</td>
+</tr>
+<tr>
+<td><code>dur(1 sec)</code></td>
+<td>one second</td>
+</tr>
+<tr>
+<td><code>dur(3 secs)</code></td>
+<td>three seconds</td>
+</tr>
+<tr>
+<td><code>dur(1 second)</code></td>
+<td>one second</td>
+</tr>
+<tr>
+<td><code>dur(3 seconds)</code></td>
+<td>three seconds</td>
+</tr>
+</tbody>
+</table>
+<h4 id="minutes">Minutes</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 m)</code></td>
+<td>one minute</td>
+</tr>
+<tr>
+<td><code>dur(3 m)</code></td>
+<td>three minutes</td>
+</tr>
+<tr>
+<td><code>dur(1 min)</code></td>
+<td>one minute</td>
+</tr>
+<tr>
+<td><code>dur(3 mins)</code></td>
+<td>three minutes</td>
+</tr>
+<tr>
+<td><code>dur(1 minute)</code></td>
+<td>one minute</td>
+</tr>
+<tr>
+<td><code>dur(3 minutes)</code></td>
+<td>three minutes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hours">Hours</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 h)</code></td>
+<td>one hour</td>
+</tr>
+<tr>
+<td><code>dur(3 h)</code></td>
+<td>three hours</td>
+</tr>
+<tr>
+<td><code>dur(1 hr)</code></td>
+<td>one hour</td>
+</tr>
+<tr>
+<td><code>dur(3 hrs)</code></td>
+<td>three hours</td>
+</tr>
+<tr>
+<td><code>dur(1 hour)</code></td>
+<td>one hour</td>
+</tr>
+<tr>
+<td><code>dur(3 hours)</code></td>
+<td>three hours</td>
+</tr>
+</tbody>
+</table>
+<h4 id="days">Days</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 d)</code></td>
+<td>one day</td>
+</tr>
+<tr>
+<td><code>dur(3 d)</code></td>
+<td>three days</td>
+</tr>
+<tr>
+<td><code>dur(1 day)</code></td>
+<td>one day</td>
+</tr>
+<tr>
+<td><code>dur(3 days)</code></td>
+<td>three days</td>
+</tr>
+</tbody>
+</table>
+<h4 id="weeks">Weeks</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 w)</code></td>
+<td>one week</td>
+</tr>
+<tr>
+<td><code>dur(3 w)</code></td>
+<td>three weeks</td>
+</tr>
+<tr>
+<td><code>dur(1 wk)</code></td>
+<td>one week</td>
+</tr>
+<tr>
+<td><code>dur(3 wks)</code></td>
+<td>three weeks</td>
+</tr>
+<tr>
+<td><code>dur(1 week)</code></td>
+<td>one week</td>
+</tr>
+<tr>
+<td><code>dur(3 weeks)</code></td>
+<td>three weeks</td>
+</tr>
+</tbody>
+</table>
+<h4 id="months">Months</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 mo)</code></td>
+<td>one month</td>
+</tr>
+<tr>
+<td><code>dur(3 mo)</code></td>
+<td>three month</td>
+</tr>
+<tr>
+<td><code>dur(1 month)</code></td>
+<td>one month</td>
+</tr>
+<tr>
+<td><code>dur(3 months)</code></td>
+<td>three months</td>
+</tr>
+</tbody>
+</table>
+<h4 id="years">Years</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 yr)</code></td>
+<td>one year</td>
+</tr>
+<tr>
+<td><code>dur(3 yrs)</code></td>
+<td>three years</td>
+</tr>
+<tr>
+<td><code>dur(1 year)</code></td>
+<td>one year</td>
+</tr>
+<tr>
+<td><code>dur(3 years)</code></td>
+<td>three years</td>
+</tr>
+</tbody>
+</table>
+<h4 id="combinations">Combinations</h4>
+<table>
+<thead>
+<tr>
+<th>Literal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dur(1 s, 2 m, 3 h)</code></td>
+<td>three hours, two minutes, and one second</td>
+</tr>
+<tr>
+<td><code>dur(1 s 2 m 3 h)</code></td>
+<td>three hours, two minutes, and one second</td>
+</tr>
+<tr>
+<td><code>dur(1s 2m 3h)</code></td>
+<td>three hours, two minutes, and one second</td>
+</tr>
+<tr>
+<td><code>dur(1second 2min 3h)</code></td>
+<td>three hours, two minutes, and one second</td>
+</tr>
+</tbody>
+</table>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../expressions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Expressions" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Expressions
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../sources/" class="md-footer__link md-footer__link--next" aria-label="Next: Sources" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Sources
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a877e258.min.js"></script>
+      
+    
+  </body>
+</html>
