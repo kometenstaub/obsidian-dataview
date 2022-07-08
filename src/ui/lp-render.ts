@@ -91,7 +91,6 @@ class InlineWidget extends WidgetType {
         const el = createSpan({
             text: this.markdown
         })
-
         return el;
     }
 
@@ -113,7 +112,7 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
             // settings and index aren't initialised yet
             if (!dvSettings || !index) return;
             const type = node.type;
-            const from = node.from;
+            //const from = node.from;
             const to = node.to;
             if (type.name !== "formatting_formatting-code_inline-code") {return}
             const bounds = getInlineCodeBounds(view, to);
