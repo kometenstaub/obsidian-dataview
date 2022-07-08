@@ -21,6 +21,7 @@ import { currentLocale } from "util/locale";
 import { DateTime } from "luxon";
 import { DataviewInlineApi } from "api/inline-api";
 import {inlinePlugin} from "./ui/lp-render";
+import {Extension} from "@codemirror/state";
 
 export default class DataviewPlugin extends Plugin {
     /** Plugin-wide default settigns. */
@@ -30,6 +31,7 @@ export default class DataviewPlugin extends Plugin {
     public index: FullIndex;
     /** External-facing plugin API. */
     public api: DataviewApi;
+    private cmExtension: Extension[];
 
     async onload() {
         // Settings initialization; write defaults first time around.
@@ -74,7 +76,14 @@ export default class DataviewPlugin extends Plugin {
             await replaceInlineFields(ctx, el, this.settings);
         });
 
-        this.registerEditorExtension(inlinePlugin(this.settings))
+        this.cmExtension = [inlinePlugin(this.index, this.settings, this.api)];
+        this.registerEditorExtension(this.cmExtension);
+        //@ts-ignore
+        this.registerEvent(this.app.metadataCache.on('dataview:metadata-change', () => {
+            const updatedExt = inlinePlugin(this.index, this.settings, this.api);
+            this.cmExtension[0] = updatedExt;
+            this.app.workspace.updateOptions();
+        }))
 
         // Dataview "force refresh" operation.
         this.addCommand({
