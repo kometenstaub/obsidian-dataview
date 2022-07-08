@@ -33,8 +33,8 @@ import { EditorSelection, Range } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import {DataviewSettings} from "../settings";
 import { FullIndex } from "../data-index";
-import {Component, editorLivePreviewField, MarkdownView} from "obsidian";
-import {asyncEvalInContext, DataviewInlineApi} from "../api/inline-api";
+import {/*Component,*/ editorLivePreviewField } from "obsidian";
+//import {asyncEvalInContext, DataviewInlineApi} from "../api/inline-api";
 import {DataviewApi} from "../api/plugin-api";
 import {tryOrPropogate} from "../util/normalize";
 import {parseField} from "../expression/parse";
@@ -144,14 +144,18 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
                 if (dvSettings.enableInlineDataviewJs) {
                     code = text.substring(dvSettings.inlineJsQueryPrefix.length).trim()
                     try {
-                        const el = createDiv();
-                        // the context needs to be looked at or maybe just asyncEvalInContext need to be rewritten here,
-                        // although async operations do not seem to work
-                        const comp = new Component()
-                        asyncEvalInContext(PREAMBLE + code, new DataviewInlineApi(api, comp, el, currentFile.path)).then( (value) => {
-                                result = value;
-                            }
-                        )
+                        //context missing -- what needs to be set for `this`?
+                        //then it needs to be added like eval().call(this)
+                        if (code.includes("await")) {
+                            // await doesn't seem to work with it because the WidgetPlugin expects it to be synchronous
+                            (evalWoContext("(async () => { " + PREAMBLE + code + " })()") as Promise<any>).then((value: any) => result = value)
+                        } else {
+                            result = evalWoContext(PREAMBLE + code);
+                        }
+
+                        function evalWoContext(script: string): any {
+                            return eval(script);
+                        }
                     } catch (e) {
                         result = `Dataview (for inline JS query '${code}'): ${e}`;
                     }
