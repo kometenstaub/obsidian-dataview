@@ -170,17 +170,6 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
             // result contains the text with which we want to replace it
             console.log(result);
 
-
-/*            const inlineDV = view.state.doc.sliceString(bounds.start, bounds.end);
-            console.log("inlineDV", inlineDV)
-
-            const activeFile = app.workspace.getActiveFile();
-            if (!activeFile) return;
-            // @ts-ignore
-            //const index = app.plugins.plugins['dataview'].api.index;
-            // @ts-ignore
-            const settings = app.plugins.plugins['dataview'].api.settings;
-            */
             const start = bounds.start;
             const end = bounds.end;
             if (selectionAndRangeOverlap(selection, start, end)) return;
