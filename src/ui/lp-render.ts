@@ -148,12 +148,10 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
                         // the context needs to be looked at or maybe just asyncEvalInContext need to be rewritten here,
                         // although async operations do not seem to work
                         const comp = new Component()
-                        if (currentFile) {
-                            asyncEvalInContext(PREAMBLE + code, new DataviewInlineApi(api, comp, el, currentFile.path)).then( (value) => {
-                                    result = value;
-                                }
-                            )
-                        }
+                        asyncEvalInContext(PREAMBLE + code, new DataviewInlineApi(api, comp, el, currentFile.path)).then( (value) => {
+                                result = value;
+                            }
+                        )
                     } catch (e) {
                         result = `Dataview (for inline JS query '${code}'): ${e}`;
                     }
