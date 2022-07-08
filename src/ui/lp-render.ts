@@ -237,7 +237,7 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
         decorations: DecorationSet
 
         constructor(view: EditorView) {
-            this.decorations = Decoration.none;
+            this.decorations = inlineRender(view, index, settings, api)
         }
 
         update(update: ViewUpdate) {

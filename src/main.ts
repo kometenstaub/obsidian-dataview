@@ -79,11 +79,14 @@ export default class DataviewPlugin extends Plugin {
         this.cmExtension = [inlinePlugin(this.index, this.settings, this.api)];
         this.registerEditorExtension(this.cmExtension);
         //@ts-ignore
+        // shouldn't be necessary
+        /*
         this.registerEvent(this.app.metadataCache.on('dataview:metadata-change', () => {
             const updatedExt = inlinePlugin(this.index, this.settings, this.api);
             this.cmExtension[0] = updatedExt;
             this.app.workspace.updateOptions();
         }))
+        */
 
         // Dataview "force refresh" operation.
         this.addCommand({
