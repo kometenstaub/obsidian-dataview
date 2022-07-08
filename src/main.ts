@@ -74,7 +74,7 @@ export default class DataviewPlugin extends Plugin {
             await replaceInlineFields(ctx, el, this.settings);
         });
 
-        this.registerEditorExtension(inlinePlugin)
+        this.registerEditorExtension(inlinePlugin(this.settings))
 
         // Dataview "force refresh" operation.
         this.addCommand({

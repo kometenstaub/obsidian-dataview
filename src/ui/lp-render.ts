@@ -1,17 +1,18 @@
-import { EditorView, ViewUpdate, Decoration, ViewPlugin, DecorationSet, WidgetType } from "@codemirror/view";
+import { EditorView, ViewUpdate, Decoration, ViewPlugin, DecorationSet } from "@codemirror/view";
 import { EditorSelection, Range } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
-import {DataviewSettings, QuerySettings} from "../settings";
-import { FullIndex } from "../data-index";
-import { Fields } from "../expression/field";
-import { tryOrPropogate } from "../util/normalize";
-import { executeInline } from "../query/engine";
-import {renderErrorPre, renderValue} from "./render";
-import {Component, editorLivePreviewField} from "obsidian";
+import {DataviewSettings} from "../settings";
+//import { FullIndex } from "../data-index";
+//import { Fields } from "../expression/field";
+//import { tryOrPropogate } from "../util/normalize";
+//import { executeInline } from "../query/engine";
+//import {renderErrorPre, renderValue} from "./render";
+import {editorLivePreviewField} from "obsidian";
 //import variable = Fields.variable;
 //import {parseQuery} from "../query/parse";
-import literal = Fields.literal;
+//import literal = Fields.literal;
 
+/*
 async function renderMd(
     fieldText: string,
     origin: string,
@@ -20,9 +21,9 @@ async function renderMd(
 ):Promise<HTMLElement> {
     const field = literal(fieldText.slice(2));
     let result = tryOrPropogate(() => executeInline(field, origin, index, settings));
-    console.log(result)
+    console.log("result", result)
     //@ts-ignore
-    console.log(await app.plugins.plugins.dataview.api.query(fieldText, origin))
+    //console.log(await app.plugins.plugins.dataview.api.query(fieldText, origin))
     if (!result.successful) {
         const errorbox = createDiv();
         return renderErrorPre(errorbox, "Dataview (for inline query '" + fieldText + "'): " + result.error);
@@ -35,6 +36,7 @@ async function renderMd(
     }
 }
 
+*/
 function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom:
     number, rangeTo: number) {
 
@@ -47,22 +49,27 @@ function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom:
     return false;
 }
 
-function getInlineDVBounds(view: EditorView, pos?: number): {start: number, end: number} {
+// also returns text between inline code, so there alwasy needs to be a check whether the correct prefix is used.
+function getInlineCodeBounds(view: EditorView, pos?: number): {start: number, end: number} | null {
     const text = view.state.doc.toString()
     if (typeof pos === "undefined") {
         pos = view.state.selection.main.from;
     }
-    let left = text.lastIndexOf('`', pos - 1)
-    const leftNewline = text.lastIndexOf('\n', pos -1)
+    let left = text.lastIndexOf('`', pos)
     const right = text.indexOf('`', pos)
+    // no backtick before or after the current backtick
+    if (left === -1 || right === -1) return null;
+    const leftNewline = text.lastIndexOf('\n', pos)
     const rightNewline = text.indexOf('\n', pos)
-    //@ts-ignore
-    if (left === -1 || right === -1) return;
-    //@ts-ignore
-    if (leftNewline > left || rightNewline < right) return;
-    left += 1
 
-    return {start: left , end: right}
+    // start or end of document w/o new lines
+    if (leftNewline === -1 || rightNewline === -1) {
+        return {start: left , end: right+1}
+    }
+
+    if (leftNewline > left || rightNewline < right) return null;
+
+    return {start: left , end: right+1}
 }
 
 
@@ -86,6 +93,7 @@ function getInlineDVBounds(view: EditorView, pos?: number): {start: number, end:
 //
 //}
 
+/*
 class InlineWidget extends WidgetType {
     constructor(readonly markdown: string, readonly filePath: string, readonly index: FullIndex, readonly settings: DataviewSettings) {
         super();
@@ -102,10 +110,16 @@ class InlineWidget extends WidgetType {
         return await renderMd(this.markdown, this.filePath, this.index, this.settings)
     }
 }
+*/
 
 
+/*
+function parseCodeBlocks(text: string) {
 
-function inlineRender(view: EditorView) {
+}
+*/
+
+function inlineRender(view: EditorView, dvSettings: DataviewSettings) {
 
     const widgets: Range<Decoration>[] = []
     const selection = view.state.selection;
@@ -113,13 +127,19 @@ function inlineRender(view: EditorView) {
     //@ts-ignore
     for (const { from, to } of view.visibleRanges) {
 
-        syntaxTree(view.state).iterate({ from, to, enter: ({type, from, to}) => {
+        syntaxTree(view.state).iterate({ from, to, enter: ({node}) => {
+            const type = node.type;
+            const from = node.from;
+            const to = node.to;
             if (type.name !== "formatting_formatting-code_inline-code") {return}
-            const bounds = getInlineDVBounds(view, to+1);
+            console.log(node, from, to)
+            const bounds = getInlineCodeBounds(view, to);
             if (!bounds) return;
+            console.log("bound", bounds)
 
 
             const inlineDV = view.state.doc.sliceString(bounds.start, bounds.end);
+            console.log("inlineDV", inlineDV)
 
             const activeFile = app.workspace.getActiveFile();
             if (!activeFile) return;
@@ -136,6 +156,7 @@ function inlineRender(view: EditorView) {
                 if (start === end) {
                     return}
 
+/*
                     widgets.push(
                         Decoration.replace({
                             // @ts-ignore
@@ -144,33 +165,35 @@ function inlineRender(view: EditorView) {
                             block: false,
                         }).range(start, end)
                     );
+*/
 
             }
 
         });
     }
-    console.log(widgets)
+    console.log("widgets", widgets)
 
     return Decoration.set(widgets, true)
 }
 
 
 
-export function inlinePlugin() {
-    ViewPlugin.fromClass(class {
+export function inlinePlugin(settings: DataviewSettings) {
+    return ViewPlugin.fromClass(class {
         decorations: DecorationSet
 
         constructor(view: EditorView) {
-            this.decorations = inlineRender(view)
+            this.decorations = inlineRender(view, settings)
         }
 
         update(update: ViewUpdate) {
+            //@ts-ignore
             if (!update.state.field(editorLivePreviewField)) {
                 this.decorations = Decoration.none;
                 return;
             }
             if (update.docChanged || update.viewportChanged || update.selectionSet)
-                this.decorations = inlineRender(update.view)
+                this.decorations = inlineRender(update.view, settings)
         }
     }, {decorations: v => v.decorations,});
 }
