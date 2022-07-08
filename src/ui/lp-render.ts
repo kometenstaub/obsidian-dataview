@@ -33,7 +33,7 @@ import { EditorSelection, Range } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import {DataviewSettings} from "../settings";
 import { FullIndex } from "../data-index";
-import {Component, editorLivePreviewField} from "obsidian";
+import {Component, editorLivePreviewField, MarkdownView} from "obsidian";
 import {asyncEvalInContext, DataviewInlineApi} from "../api/inline-api";
 import {DataviewApi} from "../api/plugin-api";
 import {tryOrPropogate} from "../util/normalize";
@@ -119,6 +119,7 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
             if (!bounds) return;
             const text = view.state.doc.sliceString(bounds.start + 1, bounds.end -1);
             let code: string;
+            // the `this` isn't correct here I think
             const PREAMBLE: string = "const dataview = this;const dv=this;";
             let result: string = "";
             const currentFile = app.workspace.getActiveFile();
@@ -144,8 +145,11 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
                     code = text.substring(dvSettings.inlineJsQueryPrefix.length).trim()
                     try {
                         const el = createDiv();
+                        // the context needs to be looked at or maybe just asyncEvalInContext need to be rewritten here,
+                        // although async operations do not seem to work
+                        const comp = new Component()
                         if (currentFile) {
-                            asyncEvalInContext(PREAMBLE + code, new DataviewInlineApi(api, null as unknown as  Component, el, currentFile.path)).then( (value) => {
+                            asyncEvalInContext(PREAMBLE + code, new DataviewInlineApi(api, comp, el, currentFile.path)).then( (value) => {
                                     result = value;
                                 }
                             )
