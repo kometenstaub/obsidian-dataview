@@ -88,7 +88,6 @@ class InlineWidget extends WidgetType {
     }
 
     toDOM(view: EditorView): HTMLElement {
-        console.log('toDom')
         const el = createSpan({
             text: this.markdown
         })
@@ -117,12 +116,9 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
             const from = node.from;
             const to = node.to;
             if (type.name !== "formatting_formatting-code_inline-code") {return}
-            console.log(node, from, to)
             const bounds = getInlineCodeBounds(view, to);
             if (!bounds) return;
-            console.log("bound", bounds);
             const text = view.state.doc.sliceString(bounds.start + 1, bounds.end -1);
-            console.log(text);
             let code: string;
             const PREAMBLE: string = "const dataview = this;const dv=this;";
             let result: string = "";
@@ -168,8 +164,6 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
 
             // at this point bounds contains the position we want to replace and
             // result contains the text with which we want to replace it
-            console.log(result);
-
             const start = bounds.start;
             const end = bounds.end;
             if (selectionAndRangeOverlap(selection, start, end)) return;
@@ -189,7 +183,6 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
 
         });
     }
-    console.log("widgets", widgets)
 
     return Decoration.set(widgets, true)
 }
