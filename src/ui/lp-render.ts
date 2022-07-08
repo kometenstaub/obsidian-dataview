@@ -105,15 +105,13 @@ class InlineWidget extends WidgetType {
     constructor(readonly markdown: string) {
         super();
     }
-    //@ts-ignore
     eq(other: InlineWidget): boolean {
         return other.markdown === this.markdown;
     }
 
-    //@ts-ignore
-    async toDOM(view: EditorView): Promise<HTMLElement> {
+    toDOM(view: EditorView): HTMLElement {
         console.log('toDom')
-        const el = createDiv({
+        const el = createSpan({
             text: this.markdown
         })
 
