@@ -1,47 +1,44 @@
+/*
+* inspired and adapted from https://github.com/artisticat1/obsidian-latex-suite/blob/main/src/conceal.ts
+*
+* The original work is MIT-licensed.
+*
+* MIT License
+*
+* Copyright (c) 2022 artisticat1
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* */
+
+
 import {EditorView, ViewUpdate, Decoration, ViewPlugin, DecorationSet, WidgetType} from "@codemirror/view";
 import { EditorSelection, Range } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import {DataviewSettings} from "../settings";
 import { FullIndex } from "../data-index";
-//import { Fields } from "../expression/field";
-//import { executeInline } from "../query/engine";
-//import {renderErrorPre, renderValue} from "./render";
 import {Component, editorLivePreviewField} from "obsidian";
 import {asyncEvalInContext, DataviewInlineApi} from "../api/inline-api";
 import {DataviewApi} from "../api/plugin-api";
 import {tryOrPropogate} from "../util/normalize";
 import {parseField} from "../expression/parse";
 import {executeInline} from "../query/engine";
-// import {FullIndex} from "../data-index";
-//import variable = Fields.variable;
-//import {parseQuery} from "../query/parse";
-//import literal = Fields.literal;
-
-/*
-async function renderMd(
-    fieldText: string,
-    origin: string,
-    index: FullIndex,
-    settings: QuerySettings
-):Promise<HTMLElement> {
-    const field = literal(fieldText.slice(2));
-    let result = tryOrPropogate(() => executeInline(field, origin, index, settings));
-    console.log("result", result)
-    //@ts-ignore
-    //console.log(await app.plugins.plugins.dataview.api.query(fieldText, origin))
-    if (!result.successful) {
-        const errorbox = createDiv();
-        return renderErrorPre(errorbox, "Dataview (for inline query '" + fieldText + "'): " + result.error);
-    } else {
-        let el = createDiv()
-        let comp = new Component()
-        //@ts-ignore
-        await renderValue(field, el, origin, comp, settings, false)
-        return el
-    }
-}
-
-*/
 
 function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom:
     number, rangeTo: number) {
@@ -56,7 +53,7 @@ function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom:
 }
 
 
-// also returns text between inline code, so there alwasy needs to be a check whether the correct prefix is used.
+// also returns text between inline code, so there always needs to be a check whether the correct prefix is used.
 function getInlineCodeBounds(view: EditorView, pos?: number): {start: number, end: number} | null {
     const text = view.state.doc.toString()
     if (typeof pos === "undefined") {
@@ -80,25 +77,6 @@ function getInlineCodeBounds(view: EditorView, pos?: number): {start: number, en
 }
 
 
-//interface replacement {
-//    start: number;
-//    end: number;
-//}
-//
-//function getExpressions(text: string, view: EditorView, bounds: {start: number, end: number}): {start: number, end: number}[] {
-//    //@ts-ignore
-//    const inlineQueryPrefix = app.plugins.plugins.dataview.api.settings.inlineQueryPrefix
-//
-//    const regexStr = `\`${inlineQueryPrefix}.+?\``
-//    const regex = new RegExp(regexStr, "g")
-//
-//    const matches = [...text.matchAll(regex)]
-//    const expressions: replacement[] = [];
-//    for (const match of matches) {
-//        const
-//    }
-//
-//}
 
 
 class InlineWidget extends WidgetType {
@@ -117,15 +95,12 @@ class InlineWidget extends WidgetType {
 
         return el;
     }
+
+    ignoreEvent(event: Event): boolean {
+        return false;
+    }
 }
 
-
-
-/*
-function parseCodeBlocks(text: string) {
-
-}
-*/
 
 function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSettings, api: DataviewApi) {
 
