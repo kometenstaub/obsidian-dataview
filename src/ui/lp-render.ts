@@ -119,8 +119,8 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
             if (!bounds) return;
             const text = view.state.doc.sliceString(bounds.start + 1, bounds.end -1);
             let code: string;
-            // the `this` isn't correct here I think
-            const PREAMBLE: string = "const dataview = this;const dv=this;";
+            // the `this` isn't correct here, it's just for testing
+            const PREAMBLE: string = "const dataview = comp;const dv=comp;";
             let result: string = "";
             const currentFile = app.workspace.getActiveFile();
             if (!currentFile) return;
@@ -144,8 +144,13 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
                 if (dvSettings.enableInlineDataviewJs) {
                     code = text.substring(dvSettings.inlineJsQueryPrefix.length).trim()
                     try {
-                        //context missing -- what needs to be set for `this`?
-                        //then it needs to be added like eval().call(this)
+                        // how do I set the `this` context properly?
+                        const comp = {
+                            api: api,
+                            current: () => currentFile,
+                            settings: dvSettings,
+                            index: index
+                        }
                         if (code.includes("await")) {
                             // await doesn't seem to work with it because the WidgetPlugin expects it to be synchronous
                             (evalWoContext("(async () => { " + PREAMBLE + code + " })()") as Promise<any>).then((value: any) => result = value)
@@ -154,7 +159,7 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
                         }
 
                         function evalWoContext(script: string): any {
-                            return eval(script);
+                            return function () {return eval(script)}.call(comp);
                         }
                     } catch (e) {
                         result = `Dataview (for inline JS query '${code}'): ${e}`;
