@@ -20,6 +20,7 @@ import { DataviewInlineJSRenderer } from "ui/views/js-view";
 import { currentLocale } from "util/locale";
 import { DateTime } from "luxon";
 import { DataviewInlineApi } from "api/inline-api";
+import {inlinePlugin} from "./ui/lp-render";
 
 export default class DataviewPlugin extends Plugin {
     /** Plugin-wide default settigns. */
@@ -72,6 +73,8 @@ export default class DataviewPlugin extends Plugin {
 
             await replaceInlineFields(ctx, el, this.settings);
         });
+
+        this.registerEditorExtension(inlinePlugin)
 
         // Dataview "force refresh" operation.
         this.addCommand({
