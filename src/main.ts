@@ -1,4 +1,12 @@
-import { App, Component, debounce, MarkdownPostProcessorContext, Plugin, PluginSettingTab, Setting } from "obsidian";
+import {
+    App,
+    Component,
+    debounce,
+    MarkdownPostProcessorContext, /*MarkdownView,*/
+    Plugin,
+    PluginSettingTab,
+    Setting,
+} from "obsidian";
 import { renderErrorPre } from "ui/render";
 import { FullIndex } from "data-index/index";
 import { parseField } from "expression/parse";
@@ -14,6 +22,7 @@ import { replaceInlineFields } from "ui/views/inline-field";
 import { DataviewInit } from "ui/markdown";
 import { inlinePlugin } from "./ui/lp-render";
 import { Extension } from "@codemirror/state";
+//import {EditorView} from "@codemirror/view";
 
 export default class DataviewPlugin extends Plugin {
     /** Plugin-wide default settigns. */
@@ -81,6 +90,22 @@ export default class DataviewPlugin extends Plugin {
         // editor extension for inline queries
         this.cmExtension = [inlinePlugin(this.index, this.settings, this.api)];
         this.registerEditorExtension(this.cmExtension);
+
+/*
+        //@ts-expect-error
+        this.registerEvent(this.app.metadataCache.on("dataview:metadata-change", (...args) => {
+            let editors: EditorView[] = [];
+            this.app.workspace.iterateAllLeaves((leaf) => {
+                if (leaf?.view instanceof MarkdownView && (leaf.view.editor as any)?.cm instanceof EditorView) {
+                    editors.push((leaf.view.editor as any).cm);
+                }
+            })
+            for (const editor of editors) {
+                //@ts-ignore
+                editor.plugin(this.cmExtension[0]).rerender(editor);
+            }
+        }))
+*/
 
         // Dataview "force refresh" operation.
         this.addCommand({

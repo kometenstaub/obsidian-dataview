@@ -56,7 +56,8 @@ class InlineWidget extends WidgetType {
         readonly cssClasses: string[],
         readonly rawQuery: string,
         private el: HTMLElement,
-        private view: EditorView
+        private view: EditorView,
+        private refresh: boolean,
     ) {
         super();
     }
@@ -64,6 +65,9 @@ class InlineWidget extends WidgetType {
     // Widgets only get updated when the raw query changes/the element gets focus and loses it
     // to prevent redraws when the editor updates.
     eq(other: InlineWidget): boolean {
+        // even when I pass `true` for this.refresh to this class, it still is always set to false
+        // the only way to make it rerender I found is to always return false, but that makes Obsidian slow
+        if (this.refresh) return false;
         if (other.rawQuery === this.rawQuery) {
             // change CSS classes without redrawing the element
             for (let value of other.cssClasses) {
@@ -128,7 +132,7 @@ function getCssClasses(nodeName: string): string[] {
     return classes;
 }
 
-function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSettings, api: DataviewApi) {
+function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSettings, api: DataviewApi, refresh: boolean = false) {
     // still doesn't work as expected for tables and callouts
     if (!index.initialized) return;
     const currentFile = app.workspace.getActiveFile();
@@ -248,7 +252,7 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
 
                 widgets.push(
                     Decoration.replace({
-                        widget: new InlineWidget(classes, code, el, view),
+                        widget: new InlineWidget(classes, code, el, view, refresh),
                         inclusive: false,
                         block: false,
                     }).range(start - 1, end + 1)
@@ -260,13 +264,18 @@ function inlineRender(view: EditorView, index: FullIndex, dvSettings: DataviewSe
     return Decoration.set(widgets, true);
 }
 
-export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: DataviewApi) {
+export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: DataviewApi): ViewPlugin<any> {
     return ViewPlugin.fromClass(
         class {
             decorations: DecorationSet;
 
             constructor(view: EditorView) {
                 this.decorations = inlineRender(view, index, settings, api) ?? Decoration.none;
+            }
+
+            public rerender(view: EditorView) {
+                //console.log("rerender")
+                this.decorations = inlineRender(view, index, settings, api, true) ?? Decoration.none;
             }
 
             update(update: ViewUpdate) {
