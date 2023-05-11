@@ -27,12 +27,12 @@
  *
  * */
 
-import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType } from "@codemirror/view";
-import { EditorSelection, Range } from "@codemirror/state";
+import { Decoration, DecorationSet, EditorView, WidgetType } from "@codemirror/view";
+import { EditorSelection, Extension, RangeSetBuilder, StateField, Transaction } from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import { DataviewSettings } from "../settings";
 import { FullIndex } from "../data-index";
-import { Component, editorEditorField, editorLivePreviewField, editorViewField } from "obsidian";
+import { Component, editorEditorField, editorInfoField } from "obsidian";
 import { DataviewApi } from "../api/plugin-api";
 import { tryOrPropogate } from "../util/normalize";
 import { parseField } from "../expression/parse";
@@ -40,6 +40,7 @@ import { executeInline } from "../query/engine";
 import { Literal } from "../data-model/value";
 import { DataviewInlineApi } from "../api/inline-api";
 import { renderValue } from "./render";
+import { SyntaxNodeRef } from "@lezer/common";
 
 function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom: number, rangeTo: number) {
     for (const range of selection.ranges) {
@@ -56,7 +57,7 @@ class InlineWidget extends WidgetType {
         readonly cssClasses: string[],
         readonly rawQuery: string,
         private el: HTMLElement,
-        private view: EditorView
+        readonly transaction: Transaction
     ) {
         super();
     }
@@ -93,7 +94,9 @@ class InlineWidget extends WidgetType {
     ignoreEvent(event: MouseEvent | Event): boolean {
         // instanceof check does not work in pop-out windows, so check it like this
         if (event.type === "mousedown") {
-            const currentPos = this.view.posAtCoords({ x: (event as MouseEvent).x, y: (event as MouseEvent).y });
+            const currentPos = this.transaction.state
+                .field(editorEditorField)
+                .posAtCoords({ x: (event as MouseEvent).x, y: (event as MouseEvent).y });
             if ((event as MouseEvent).shiftKey) {
                 // Set the cursor after the element so that it doesn't select starting from the last cursor position.
                 if (currentPos) {
@@ -128,165 +131,138 @@ function getCssClasses(nodeName: string): string[] {
     return classes;
 }
 
-function inlineRender(
-    view: EditorView,
-    index: FullIndex,
+function render(
+    node: SyntaxNodeRef,
+    state: DecorationSet,
+    transaction: Transaction,
     dvSettings: DataviewSettings,
-    api: DataviewApi,
-    component: Component
+    index: FullIndex,
+    component: Component,
+    api: DataviewApi
 ) {
-    // still doesn't work as expected for tables and callouts
-    if (!index.initialized) return;
-    const currentFile = app.workspace.getActiveFile();
-    if (!currentFile) return;
-
-    const widgets: Range<Decoration>[] = [];
-    const selection = view.state.selection;
-    /* before:
-     *     em for italics
-     *     highlight for highlight
-     * after:
-     *     strong for bold
-     *     strikethrough for strikethrough
-     */
+    const type = node.type;
+    // markdown formatting symbols
+    if (type.name.includes("formatting")) return;
+    // current node is not inline code
     const regex = new RegExp(".*?_?inline-code_?.*");
+    if (!regex.test(type.name)) return;
+
+    // contains the position of inline code
+    const start = node.from;
+    const end = node.to;
+    // don't continue if current cursor position and inline code node (including formatting
+    // symbols) overlap
+    if (selectionAndRangeOverlap(transaction.state.selection, start - 1, end + 1)) return;
+
+    const text = transaction.state.doc.sliceString(start, end);
+    const notNormalCode =
+        text.startsWith(dvSettings.inlineQueryPrefix) || text.startsWith(dvSettings.inlineJsQueryPrefix);
+    if (!notNormalCode) return;
+    let code: string = "";
+    let result: Literal = "";
+    const el = createSpan({
+        cls: ["dataview", "dataview-inline"],
+    });
     const PREAMBLE: string = "const dataview=this;const dv=this;";
-
-    for (const { from, to } of view.visibleRanges) {
-        syntaxTree(view.state).iterate({
-            from,
-            to,
-            enter: ({ node }) => {
-                const type = node.type;
-                // markdown formatting symbols
-                if (type.name.includes("formatting")) return;
-                // current node is not inline code
-                if (!regex.test(type.name)) return;
-
-                // contains the position of inline code
-                const start = node.from;
-                const end = node.to;
-                // don't continue if current cursor position and inline code node (including formatting
-                // symbols) overlap
-                if (selectionAndRangeOverlap(selection, start - 1, end + 1)) return;
-
-                const text = view.state.doc.sliceString(start, end);
-                const notNormalCode =
-                    text.startsWith(dvSettings.inlineQueryPrefix) || text.startsWith(dvSettings.inlineJsQueryPrefix);
-                if (!notNormalCode) return;
-                let code: string = "";
-                let result: Literal = "";
-                const el = createSpan({
-                    cls: ["dataview", "dataview-inline"],
-                });
-                /* If the query result is predefined text (e.g. in the case of errors), set innerText to it.
-                 * Otherwise, pass on an empty element and fill it in later.
-                 * This is necessary because {@link InlineWidget.toDOM} is synchronous but some rendering
-                 * asynchronous.
-                 */
-                if (dvSettings.inlineQueryPrefix.length > 0 && text.startsWith(dvSettings.inlineQueryPrefix)) {
-                    code = text.substring(dvSettings.inlineQueryPrefix.length).trim();
-                    const field = tryOrPropogate(() => parseField(code));
-                    if (!field.successful) {
-                        result = `Dataview (inline field '${code}'): ${field.error}`;
-                        el.innerText = result;
-                    } else {
-                        const fieldValue = field.value;
-                        const intermediateResult = tryOrPropogate(() =>
-                            executeInline(fieldValue, currentFile.path, index, dvSettings)
-                        );
-                        if (!intermediateResult.successful) {
-                            result = `Dataview (for inline query '${fieldValue}'): ${intermediateResult.error}`;
-                            el.innerText = result;
-                        } else {
-                            const { value } = intermediateResult;
-                            result = value;
-                            renderValue(result, el, currentFile.path, component, dvSettings);
+    const file = transaction.state.field(editorInfoField).file;
+    /* If the query result is predefined text (e.g. in the case of errors), set innerText to it.
+     * Otherwise, pass on an empty element and fill it in later.
+     * This is necessary because {@link InlineWidget.toDOM} is synchronous but some rendering
+     * asynchronous.
+     */
+    if (dvSettings.inlineQueryPrefix.length > 0 && text.startsWith(dvSettings.inlineQueryPrefix)) {
+        code = text.substring(dvSettings.inlineQueryPrefix.length).trim();
+        const field = tryOrPropogate(() => parseField(code));
+        if (!field.successful) {
+            result = `Dataview (inline field '${code}'): ${field.error}`;
+            el.innerText = result;
+        } else {
+            const fieldValue = field.value;
+            const intermediateResult = tryOrPropogate(() =>
+                executeInline(fieldValue, file?.path as string, index, dvSettings)
+            );
+            if (!intermediateResult.successful) {
+                result = `Dataview (for inline query '${fieldValue}'): ${intermediateResult.error}`;
+                el.innerText = result;
+            } else {
+                const { value } = intermediateResult;
+                result = value;
+                renderValue(result, el, file?.path as string, component, dvSettings);
+            }
+        }
+    } else if (dvSettings.inlineJsQueryPrefix.length > 0 && text.startsWith(dvSettings.inlineJsQueryPrefix)) {
+        if (dvSettings.enableInlineDataviewJs) {
+            code = text.substring(dvSettings.inlineJsQueryPrefix.length).trim();
+            try {
+                // for setting the correct context for dv/dataview
+                const myEl = createDiv();
+                // no file in canvas cards, but it should still do what is possible
+                const dvInlineApi = new DataviewInlineApi(api, component, myEl, file?.path as string);
+                if (code.includes("await")) {
+                    (evalInContext("(async () => { " + PREAMBLE + code + " })()") as Promise<any>).then(
+                        (result: any) => {
+                            renderValue(result, el, file?.path as string, component, dvSettings);
                         }
-                    }
-                } else if (
-                    dvSettings.inlineJsQueryPrefix.length > 0 &&
-                    text.startsWith(dvSettings.inlineJsQueryPrefix)
-                ) {
-                    if (dvSettings.enableInlineDataviewJs) {
-                        code = text.substring(dvSettings.inlineJsQueryPrefix.length).trim();
-                        try {
-                            // for setting the correct context for dv/dataview
-                            const myEl = createDiv();
-                            const dvInlineApi = new DataviewInlineApi(api, component, myEl, currentFile.path);
-                            if (code.includes("await")) {
-                                (evalInContext("(async () => { " + PREAMBLE + code + " })()") as Promise<any>).then(
-                                    (result: any) => {
-                                        renderValue(result, el, currentFile.path, component, dvSettings);
-                                    }
-                                );
-                            } else {
-                                result = evalInContext(PREAMBLE + code);
-                                renderValue(result, el, currentFile.path, component, dvSettings);
-                            }
-
-                            function evalInContext(script: string): any {
-                                return function () {
-                                    return eval(script);
-                                }.call(dvInlineApi);
-                            }
-                        } catch (e) {
-                            result = `Dataview (for inline JS query '${code}'): ${e}`;
-                            el.innerText = result;
-                        }
-                    } else {
-                        result = "(disabled; enable in settings)";
-                        el.innerText = result;
-                    }
+                    );
                 } else {
-                    return;
+                    result = evalInContext(PREAMBLE + code);
+                    renderValue(result, el, file?.path as string, component, dvSettings);
                 }
 
-                const classes = getCssClasses(type.name);
-
-                widgets.push(
-                    Decoration.replace({
-                        widget: new InlineWidget(classes, code, el, view),
-                        inclusive: false,
-                        block: false,
-                    }).range(start - 1, end + 1)
-                );
-            },
-        });
+                function evalInContext(script: string): any {
+                    return function () {
+                        return eval(script);
+                    }.call(dvInlineApi);
+                }
+            } catch (e) {
+                result = `Dataview (for inline JS query '${code}'): ${e}`;
+                el.innerText = result;
+            }
+        } else {
+            result = "(disabled; enable in settings)";
+            el.innerText = result;
+        }
+    } else {
+        return;
     }
 
-    return Decoration.set(widgets, true);
+    const classes = getCssClasses(type.name);
+
+    return {
+        start: start - 1,
+        end: end + 1,
+        deco: Decoration.replace({
+            widget: new InlineWidget(classes, code, el, transaction),
+            inclusive: false,
+            block: false,
+        }),
+    };
 }
 
-export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: DataviewApi) {
-    return ViewPlugin.fromClass(
-        class {
-            decorations: DecorationSet;
-            component: Component;
-
-            constructor(view: EditorView) {
-                this.decorations = inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
-                this.component = new Component();
-                this.component.load();
-            }
-
-            update(update: ViewUpdate) {
-                // only activate in LP and not source mode
-                //@ts-ignore
-                if (!update.state.field(editorLivePreviewField)) {
-                    this.decorations = Decoration.none;
-                    return;
-                }
-                if (update.docChanged || update.viewportChanged || update.selectionSet) {
-                    this.decorations =
-                        inlineRender(update.view, index, settings, api, this.component) ?? Decoration.none;
-                }
-            }
-
-            destroy() {
-                this.component.unload();
-            }
+export function inlineQueryField(index: FullIndex, settings: DataviewSettings, api: DataviewApi, component: Component) {
+    return StateField.define<DecorationSet>({
+        create(state): DecorationSet {
+            return Decoration.none;
         },
-        { decorations: v => v.decorations }
-    );
+        update(oldState: DecorationSet, transaction) {
+            const builder = new RangeSetBuilder<Decoration>();
+            // still doesn't work as expected for tables and callouts
+            if (!index.initialized) {
+                return Decoration.none;
+            }
+            syntaxTree(transaction.state).iterate({
+                enter(node): boolean | void {
+                    const result = render(node, oldState, transaction, settings, index, component, api);
+                    if (result) {
+                        builder.add(result?.start, result?.end, result?.deco);
+                    } else {
+                    }
+                },
+            });
+            return builder.finish();
+        },
+        provide(field): Extension {
+            return EditorView.decorations.from(field);
+        },
+    });
 }

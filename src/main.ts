@@ -12,7 +12,7 @@ import { DateTime } from "luxon";
 import { DataviewInlineApi } from "api/inline-api";
 import { replaceInlineFields } from "ui/views/inline-field";
 import { DataviewInit } from "ui/markdown";
-import { inlinePlugin } from "./ui/lp-render";
+import { inlineQueryField } from "./ui/lp-render";
 import { Extension } from "@codemirror/state";
 
 export default class DataviewPlugin extends Plugin {
@@ -26,6 +26,7 @@ export default class DataviewPlugin extends Plugin {
 
     /** CodeMirror 6 extensions that dataview installs. Tracked via array to allow for dynamic updates. */
     private cmExtension: Extension[];
+    private component: Component;
 
     async onload() {
         // Settings initialization; write defaults first time around.
@@ -86,7 +87,9 @@ export default class DataviewPlugin extends Plugin {
         });
 
         // editor extension for inline queries
-        this.cmExtension = [inlinePlugin(this.index, this.settings, this.api)];
+        this.component = new Component();
+        this.component.load();
+        this.cmExtension = [inlineQueryField(this.index, this.settings, this.api, this.component)];
         this.registerEditorExtension(this.cmExtension);
 
         // Dataview "force refresh" operation.
@@ -130,6 +133,7 @@ export default class DataviewPlugin extends Plugin {
     }
 
     public onunload() {
+        this.component.unload();
         console.log(`Dataview: version ${this.manifest.version} unloaded.`);
     }
 
