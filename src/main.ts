@@ -12,7 +12,7 @@ import { DateTime } from "luxon";
 import { DataviewInlineApi } from "api/inline-api";
 import { replaceInlineFields } from "ui/views/inline-field";
 import { DataviewInit } from "ui/markdown";
-import { inlineQueryField } from "./ui/lp-render";
+import { inlineQueryPlugin } from "./ui/lp-render";
 import { Extension } from "@codemirror/state";
 
 export default class DataviewPlugin extends Plugin {
@@ -89,7 +89,7 @@ export default class DataviewPlugin extends Plugin {
         // editor extension for inline queries
         this.component = new Component();
         this.component.load();
-        this.cmExtension = [inlineQueryField(this.index, this.settings, this.api, this.component)];
+        this.cmExtension = [inlineQueryPlugin(this.index, this.settings, this.api, this.component)];
         this.registerEditorExtension(this.cmExtension);
 
         // Dataview "force refresh" operation.
