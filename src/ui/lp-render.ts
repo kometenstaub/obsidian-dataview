@@ -28,7 +28,16 @@
  * */
 
 import { Decoration, DecorationSet, EditorView, WidgetType } from "@codemirror/view";
-import { EditorSelection, Extension, RangeSetBuilder, StateField, Transaction } from "@codemirror/state";
+import {
+    EditorSelection,
+    EditorState,
+    Extension,
+    RangeSetBuilder,
+    StateEffect,
+    StateEffectType,
+    StateField,
+    Transaction,
+} from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import { DataviewSettings } from "../settings";
 import { FullIndex } from "../data-index";
@@ -139,7 +148,7 @@ function render(
     index: FullIndex,
     component: Component,
     api: DataviewApi
-) {
+): widget | undefined {
     const type = node.type;
     // markdown formatting symbols
     if (type.name.includes("formatting")) return;
@@ -239,6 +248,19 @@ function render(
     };
 }
 
+interface widget {
+    start: number;
+    end: number;
+    deco: Decoration;
+}
+
+class WidgetCache {
+    widgets: widget[] = [];
+
+    constructor(private editor: EditorState) {}
+    getWidgets();
+}
+
 export function inlineQueryField(index: FullIndex, settings: DataviewSettings, api: DataviewApi, component: Component) {
     return StateField.define<DecorationSet>({
         create(state): DecorationSet {
@@ -265,4 +287,26 @@ export function inlineQueryField(index: FullIndex, settings: DataviewSettings, a
             return EditorView.decorations.from(field);
         },
     });
+}
+
+// https://github.com/ChromeDevTools/devtools-frontend/blob/487173fda621b13e290c74e419c76bffed8c639b/front_end/panels/sources/DebuggerPlugin.ts#L1841
+interface statefulDeco {
+    update: StateEffectType<DecorationSet>;
+    field: StateField<DecorationSet>;
+}
+function statefulDecoration(): statefulDeco {
+    const update = StateEffect.define<DecorationSet>();
+    const field = StateField.define<DecorationSet>({
+        create(): DecorationSet {
+            return Decoration.none;
+        },
+        update(decoration, transaction): DecorationSet {
+            return transaction.effects.reduce(
+                (decoration, effect) => (effect.is(update) ? effect.value : decoration),
+                decoration.map(transaction.changes)
+            );
+        },
+        provide: field => EditorView.decorations.from(field),
+    });
+    return { update, field };
 }
