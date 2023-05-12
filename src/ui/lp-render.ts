@@ -28,7 +28,7 @@
  * */
 
 import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType } from "@codemirror/view";
-import { EditorSelection, Range } from "@codemirror/state";
+import {EditorSelection, Range, RangeCursor} from "@codemirror/state";
 import { syntaxTree } from "@codemirror/language";
 import { DataviewSettings } from "../settings";
 import { FullIndex } from "../data-index";
@@ -175,6 +175,7 @@ function inlineRender(
                 const notNormalCode =
                     text.startsWith(dvSettings.inlineQueryPrefix) || text.startsWith(dvSettings.inlineJsQueryPrefix);
                 if (!notNormalCode) return;
+                console.log("hello")
                 let code: string = "";
                 let result: Literal = "";
                 const el = createSpan({
@@ -265,12 +266,14 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
             decorations: DecorationSet;
             tree: Tree;
             component: Component;
+            lastOverlap: boolean;
 
             constructor(view: EditorView) {
                 this.tree = syntaxTree(view.state)
                 this.component = new Component();
                 this.component.load();
                 this.decorations = inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
+                this.lastOverlap = false;
             }
 
             update(update: ViewUpdate) {
@@ -280,13 +283,42 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
                     this.decorations = Decoration.none;
                     return;
                 }
-                let tree = syntaxTree(update.state)
-                if (tree.length < update.view.viewport.to || update.view.compositionStarted) {
+                if (update.docChanged) {
                     this.decorations = this.decorations.map(update.changes)
-                } else if (tree != this.tree || update.viewportChanged) {
+                    return;
+                }
+                let tree = syntaxTree(update.state)
+                const sel = update.view.state.selection
+                const deco = this.decorations.iter()
+                console.log("firstDeco: " + deco.from, deco.to)
+                this.rebuildIfOverlap(sel, tree, update, deco)
+                while (deco.value != null) {
+                    this.rebuildIfOverlap(sel, tree, update, deco)
+                    deco.next()
+                }
+                // if (update.view.compositionStarted) {
+                //     this.decorations = this.decorations.map(update.changes)
+                // }
+                // if (tree != this.tree || update.viewportChanged) {
+                //     this.tree = tree;
+                //     this.decorations = this.buildDeco(update.view)
+                // }
+            }
+
+            rebuildIfOverlap(sel: EditorSelection, tree: Tree, update: ViewUpdate, deco: RangeCursor<Decoration>) {
+                // console.log(this.lastOverlap)
+                // console.log(selectionAndRangeOverlap(sel, deco.from, deco.to))
+                // console.log(sel.ranges, deco.from, deco.to)
+                console.log("from " + deco.from)
+                console.log("to " + deco.to)
+                if (selectionAndRangeOverlap(sel, deco.from, deco.to)) {
                     this.tree = tree;
                     this.decorations = this.buildDeco(update.view)
-
+                    this.lastOverlap = true;
+                } else if (this.lastOverlap) {
+                    this.tree = tree;
+                    this.decorations = this.buildDeco(update.view)
+                    this.lastOverlap = false;
                 }
             }
 
