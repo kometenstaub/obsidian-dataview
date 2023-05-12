@@ -40,6 +40,7 @@ import { executeInline } from "../query/engine";
 import { Literal } from "../data-model/value";
 import { DataviewInlineApi } from "../api/inline-api";
 import { renderValue } from "./render";
+import {Tree} from "@lezer/common"
 
 function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom: number, rangeTo: number) {
     for (const range of selection.ranges) {
@@ -262,12 +263,14 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
     return ViewPlugin.fromClass(
         class {
             decorations: DecorationSet;
+            tree: Tree;
             component: Component;
 
             constructor(view: EditorView) {
-                this.decorations = inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
+                this.tree = syntaxTree(view.state)
                 this.component = new Component();
                 this.component.load();
+                this.decorations = inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
             }
 
             update(update: ViewUpdate) {
@@ -277,10 +280,19 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
                     this.decorations = Decoration.none;
                     return;
                 }
-                if (update.docChanged || update.viewportChanged || update.selectionSet) {
-                    this.decorations =
-                        inlineRender(update.view, index, settings, api, this.component) ?? Decoration.none;
+                let tree = syntaxTree(update.state)
+                if (tree.length < update.view.viewport.to || update.view.compositionStarted) {
+                    this.decorations = this.decorations.map(update.changes)
+                } else if (tree != this.tree || update.viewportChanged) {
+                    this.tree = tree;
+                    this.decorations = this.buildDeco(update.view)
+
                 }
+            }
+
+            buildDeco(view: EditorView) {
+                if (!this.tree.length) return Decoration.none;
+                return inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
             }
 
             destroy() {
