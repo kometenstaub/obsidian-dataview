@@ -44,8 +44,10 @@ import {Tree} from "@lezer/common"
 
 function selectionAndRangeOverlap(selection: EditorSelection, rangeFrom: number, rangeTo: number) {
     for (const range of selection.ranges) {
-        if (range.from <= rangeTo && range.to >= rangeFrom) {
+        if (range.from === range.to && range.from >= rangeFrom && range.from <= rangeTo) {
             return true;
+        } else if (range.to >= rangeFrom && range.to <= rangeTo) {
+                return true
         }
     }
 
@@ -267,6 +269,7 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
             tree: Tree;
             component: Component;
             lastOverlap: boolean;
+            oldDecorations: DecorationSet
 
             constructor(view: EditorView) {
                 this.tree = syntaxTree(view.state)
@@ -274,6 +277,7 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
                 this.component.load();
                 this.decorations = inlineRender(view, index, settings, api, this.component) ?? Decoration.none;
                 this.lastOverlap = false;
+                this.oldDecorations = Decoration.none;
             }
 
             update(update: ViewUpdate) {
@@ -281,16 +285,17 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
                 //@ts-ignore
                 if (!update.state.field(editorLivePreviewField)) {
                     this.decorations = Decoration.none;
+                    this.oldDecorations = this.decorations
                     return;
                 }
                 if (update.docChanged) {
                     this.decorations = this.decorations.map(update.changes)
+                    this.oldDecorations = this.decorations
                     return;
                 }
                 let tree = syntaxTree(update.state)
                 const sel = update.view.state.selection
                 const deco = this.decorations.iter()
-                console.log("firstDeco: " + deco.from, deco.to)
                 this.rebuildIfOverlap(sel, tree, update, deco)
                 while (deco.value != null) {
                     this.rebuildIfOverlap(sel, tree, update, deco)
@@ -300,25 +305,29 @@ export function inlinePlugin(index: FullIndex, settings: DataviewSettings, api: 
                 //     this.decorations = this.decorations.map(update.changes)
                 // }
                 // if (tree != this.tree || update.viewportChanged) {
+                //     console.log("new tree")
                 //     this.tree = tree;
                 //     this.decorations = this.buildDeco(update.view)
                 // }
             }
 
             rebuildIfOverlap(sel: EditorSelection, tree: Tree, update: ViewUpdate, deco: RangeCursor<Decoration>) {
-                // console.log(this.lastOverlap)
-                // console.log(selectionAndRangeOverlap(sel, deco.from, deco.to))
-                // console.log(sel.ranges, deco.from, deco.to)
-                console.log("from " + deco.from)
-                console.log("to " + deco.to)
+                console.log(this.lastOverlap)
                 if (selectionAndRangeOverlap(sel, deco.from, deco.to)) {
                     this.tree = tree;
                     this.decorations = this.buildDeco(update.view)
                     this.lastOverlap = true;
-                } else if (this.lastOverlap) {
-                    this.tree = tree;
-                    this.decorations = this.buildDeco(update.view)
-                    this.lastOverlap = false;
+                } else {
+                    const oldDeco = this.oldDecorations.iter()
+                    this.lastOverlap = selectionAndRangeOverlap(sel, oldDeco.from, oldDeco.to);
+                    while (oldDeco.value) {
+                        this.lastOverlap = selectionAndRangeOverlap(sel, oldDeco.from, oldDeco.to);
+                        oldDeco.next()
+                    }
+                    if (!this.lastOverlap) {
+                        this.tree = tree;
+                        this.decorations = this.buildDeco(update.view)
+                    }
                 }
             }
 
